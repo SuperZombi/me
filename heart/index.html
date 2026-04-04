@@ -41,82 +41,79 @@
 
 	<script>
 		let timeout = null;
-		function vibrateGamepads(duration, strongMagnitude = 1, weakMagnitude = 1) {
-			const gamepads = navigator.getGamepads?.() || [];
-			for (const gamepad of gamepads) {
-				if (!gamepad) continue;
-				const actuators = [
-					gamepad.vibrationActuator,
-					...(gamepad.hapticActuators || [])
-				].filter(Boolean);
+		const btn = document.getElementById("btn");
+		const gamepadButtonState = new Map();
+		const ACTION_BUTTON_INDEX = 0;
 
-				for (const actuator of actuators) {
+		function getGamepadActuators(gamepad) {
+			return [gamepad?.vibrationActuator, ...(gamepad?.hapticActuators || [])].filter(Boolean);
+		}
+
+		function vibrateGamepads(duration, magnitude = 1) {
+			for (const gamepad of navigator.getGamepads?.() || []) {
+				for (const actuator of getGamepadActuators(gamepad)) {
 					if (typeof actuator.playEffect === "function") {
 						actuator.playEffect("dual-rumble", {
 							startDelay: 0,
 							duration,
-							strongMagnitude,
-							weakMagnitude
+							strongMagnitude: magnitude,
+							weakMagnitude: magnitude
 						}).catch(() => {});
 					} else if (typeof actuator.pulse === "function") {
-						actuator.pulse(Math.max(strongMagnitude, weakMagnitude), duration);
+						actuator.pulse(magnitude, duration);
 					}
 				}
 			}
 		}
 
-		function stopGamepadVibration() {
-			const gamepads = navigator.getGamepads?.() || [];
-			for (const gamepad of gamepads) {
-				if (!gamepad) continue;
-				const actuators = [
-					gamepad.vibrationActuator,
-					...(gamepad.hapticActuators || [])
-				].filter(Boolean);
-				for (const actuator of actuators) {
-					if (typeof actuator.reset === "function") {
-						actuator.reset();
-					} else if (typeof actuator.playEffect === "function") {
-						actuator.playEffect("dual-rumble", {
-							startDelay: 0,
-							duration: 1,
-							strongMagnitude: 0,
-							weakMagnitude: 0
-						}).catch(() => {});
-					} else if (typeof actuator.pulse === "function") {
-						actuator.pulse(0, 1);
-					}
-				}
-			}
-		}
-
-		function vibrateAll(duration, strongMagnitude = 1, weakMagnitude = 1) {
+		function vibrateAll(duration) {
 			navigator.vibrate(duration);
-			vibrateGamepads(duration, strongMagnitude, weakMagnitude);
+			vibrateGamepads(duration);
+		}
+
+		function stopVibration() {
+			navigator.vibrate(0);
+			vibrateGamepads(1, 0);
 		}
 
 		function heartbeatCycle() {
-			vibrateAll(120)
+			vibrateAll(120);
 			timeout = setTimeout(() => {
-				vibrateAll(80)
+				vibrateAll(80);
 				const nextDelay = 700 + Math.random() * 300;
-				timeout = setTimeout(heartbeatCycle, nextDelay)
-			}, 180)
-	}
-
-	const btn = document.getElementById("btn");
-	btn.addEventListener("click", () => {
-		let isRunning = btn.classList.contains("active")
-			if (isRunning) {
-				btn.classList.remove("active")
-				clearTimeout(timeout)
-				navigator.vibrate(0)
-				stopGamepadVibration()
-			} else {
-				btn.classList.add("active")
-				heartbeatCycle()
+				timeout = setTimeout(heartbeatCycle, nextDelay);
+			}, 180);
 		}
-	})
-</script>
+
+		function setHeartbeat(isRunning) {
+			btn.classList.toggle("active", isRunning);
+			clearTimeout(timeout);
+			if (isRunning) {
+				heartbeatCycle();
+			} else {
+				stopVibration();
+			}
+		}
+
+		function toggleHeartbeat() {
+			setHeartbeat(!btn.classList.contains("active"));
+		}
+
+		function watchGamepadActionButton() {
+			for (const gamepad of navigator.getGamepads?.() || []) {
+				if (!gamepad) continue;
+				const isPressed = Boolean(gamepad.buttons?.[ACTION_BUTTON_INDEX]?.pressed);
+				const wasPressed = gamepadButtonState.get(gamepad.index) || false;
+				if (isPressed && !wasPressed) {
+					toggleHeartbeat();
+				}
+				gamepadButtonState.set(gamepad.index, isPressed);
+			}
+			requestAnimationFrame(watchGamepadActionButton);
+		}
+
+		btn.addEventListener("click", toggleHeartbeat);
+		requestAnimationFrame(watchGamepadActionButton);
+	</script>
 </body>
 </html>
