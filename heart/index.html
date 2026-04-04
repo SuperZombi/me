@@ -39,27 +39,82 @@
 
 <img id="btn" class="heart" src="heart.png" draggable="false"/>
 
-<script>
-	let timeout = null;
-	function heartbeatCycle() {
-		navigator.vibrate(120)
-		timeout = setTimeout(() => {
-			navigator.vibrate(80)
-			const nextDelay = 700 + Math.random() * 300;
-			timeout = setTimeout(heartbeatCycle, nextDelay)
-		}, 180)
+	<script>
+		let timeout = null;
+		function vibrateGamepads(duration, strongMagnitude = 1, weakMagnitude = 1) {
+			const gamepads = navigator.getGamepads?.() || [];
+			for (const gamepad of gamepads) {
+				if (!gamepad) continue;
+				const actuators = [
+					gamepad.vibrationActuator,
+					...(gamepad.hapticActuators || [])
+				].filter(Boolean);
+
+				for (const actuator of actuators) {
+					if (typeof actuator.playEffect === "function") {
+						actuator.playEffect("dual-rumble", {
+							startDelay: 0,
+							duration,
+							strongMagnitude,
+							weakMagnitude
+						}).catch(() => {});
+					} else if (typeof actuator.pulse === "function") {
+						actuator.pulse(Math.max(strongMagnitude, weakMagnitude), duration);
+					}
+				}
+			}
+		}
+
+		function stopGamepadVibration() {
+			const gamepads = navigator.getGamepads?.() || [];
+			for (const gamepad of gamepads) {
+				if (!gamepad) continue;
+				const actuators = [
+					gamepad.vibrationActuator,
+					...(gamepad.hapticActuators || [])
+				].filter(Boolean);
+				for (const actuator of actuators) {
+					if (typeof actuator.reset === "function") {
+						actuator.reset();
+					} else if (typeof actuator.playEffect === "function") {
+						actuator.playEffect("dual-rumble", {
+							startDelay: 0,
+							duration: 1,
+							strongMagnitude: 0,
+							weakMagnitude: 0
+						}).catch(() => {});
+					} else if (typeof actuator.pulse === "function") {
+						actuator.pulse(0, 1);
+					}
+				}
+			}
+		}
+
+		function vibrateAll(duration, strongMagnitude = 1, weakMagnitude = 1) {
+			navigator.vibrate(duration);
+			vibrateGamepads(duration, strongMagnitude, weakMagnitude);
+		}
+
+		function heartbeatCycle() {
+			vibrateAll(120)
+			timeout = setTimeout(() => {
+				vibrateAll(80)
+				const nextDelay = 700 + Math.random() * 300;
+				timeout = setTimeout(heartbeatCycle, nextDelay)
+			}, 180)
 	}
 
 	const btn = document.getElementById("btn");
 	btn.addEventListener("click", () => {
 		let isRunning = btn.classList.contains("active")
-		if (isRunning) {
-			btn.classList.remove("active")
-			clearTimeout(timeout)
-			navigator.vibrate(0)
-		} else {
-			btn.classList.add("active")
-			heartbeatCycle()
+			if (isRunning) {
+				btn.classList.remove("active")
+				clearTimeout(timeout)
+				navigator.vibrate(0)
+				stopGamepadVibration()
+			} else {
+				btn.classList.add("active")
+				heartbeatCycle()
 		}
 	})
 </script>
