@@ -10,18 +10,27 @@
 			margin: 0;
 			height: 100dvh;
 			font-family: sans-serif;
+			text-align: center;
 			display: flex;
 			flex-direction: column;
-			text-align: center;
 		}
 		#chart{
 			height: 100%;
+			flex: 1 1 auto;
+			min-height: 0;
+			display: flex;
+			flex-direction: column;
 		}
 		#chart input{
 			width: 240px;
+			align-self: center;
+		}
+		#chart canvas{
+			flex: 1 1 auto;
+			min-height: 0;
 		}
 		.hide{
-			display: none;
+			display: none !important;
 		}
 	</style>
 </head>
@@ -36,7 +45,7 @@
 </p>
 
 <div id="chart">
-	<input type="range" value="100" min="5" max="100" step="1" name="slice"/>
+	<input type="range" min="5" max="50" value="50" step="1" name="slice"/>
 	<canvas></canvas>
 </div>
 
