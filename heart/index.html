@@ -22,9 +22,12 @@
 			filter: grayscale(1);
 			user-select: none;
 		}
+		:root {
+			--beat-duration: 1000ms;
+		}
 		.heart.active{
 			filter: drop-shadow(0 0 26px rgba(222, 24, 36, 0.85));
-			animation: beat 1s infinite ease-in-out;
+			animation: beat var(--beat-duration) infinite ease-in-out;
 		}
 		@keyframes beat {
 			0%, 100% { transform: scale(1); }
@@ -40,14 +43,15 @@
 <img id="btn" class="heart" src="heart.png" draggable="false"/>
 
 <script>
-	let timeout = null;
-	function heartbeatCycle() {
-		navigator.vibrate(120)
-		timeout = setTimeout(() => {
-			navigator.vibrate(80)
-			const nextDelay = 700 + Math.random() * 300;
-			timeout = setTimeout(heartbeatCycle, nextDelay)
-		}, 180)
+	const beatDuration = 1000;
+	const vibrationPattern = [120, 230, 80, 570];
+	let intervalId = null;
+
+	function startHeartbeat() {
+		navigator.vibrate(vibrationPattern);
+		intervalId = setInterval(() => {
+			navigator.vibrate(vibrationPattern);
+		}, beatDuration);
 	}
 
 	const btn = document.getElementById("btn");
@@ -55,11 +59,12 @@
 		let isRunning = btn.classList.contains("active")
 		if (isRunning) {
 			btn.classList.remove("active")
-			clearTimeout(timeout)
+			clearInterval(intervalId)
+			intervalId = null
 			navigator.vibrate(0)
 		} else {
 			btn.classList.add("active")
-			heartbeatCycle()
+			startHeartbeat()
 		}
 	})
 </script>
