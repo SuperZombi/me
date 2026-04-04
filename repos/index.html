@@ -17,6 +17,9 @@
 		#chart{
 			height: 100%;
 		}
+		#chart input{
+			width: 240px;
+		}
 		.hide{
 			display: none;
 		}
@@ -28,11 +31,12 @@
 
 <p>
 	<span>Username:</span>
-	<input type="text" name="username">
+	<input type="text" name="username"/>
 	<button id="btn">OK</button>
 </p>
 
 <div id="chart">
+	<input type="range" value="100" min="5" max="100" step="1" name="slice"/>
 	<canvas></canvas>
 </div>
 
@@ -49,10 +53,17 @@
 
 <script>
 	let destroy_chart = null;
+	let global_data = null;
 
 	document.querySelector("#btn").addEventListener("click", _=>{main()})
 	document.querySelector('input[name="username"]').addEventListener("keydown", event=>{
 		if (event.keyCode == 13){main()}
+	})
+	document.querySelector('input[name="slice"]').addEventListener("change", _=>{
+		if (global_data){
+			if (destroy_chart){destroy_chart()}
+			destroy_chart = buildChart(global_data)
+		}
 	})
 	window.onload = _=>{
 		const params = new URLSearchParams(window.location.search)
@@ -62,6 +73,7 @@
 	}
 
 	function main(){
+		global_data = null
 		if (destroy_chart){destroy_chart()}
 		const username = document.querySelector('input[name="username"]').value.trim()
 		if (username){
@@ -75,6 +87,7 @@
 			document.querySelector('#chart').classList.add("hide")
 
 			getReposSizes(username).then(data=>{
+				global_data = data
 				destroy_chart = buildChart(data)
 				document.querySelector("#loader").classList.add("hide")
 				document.querySelector('#chart').classList.remove("hide")
@@ -103,8 +116,10 @@
 	function buildChart(repos){
 		if (destroy_chart){destroy_chart()}
 
-		const labels = repos.map(r => r[0])
-		const data = repos.map(r => r[1])
+		const slice = document.querySelector('input[name="slice"]').value;
+
+		const labels = repos.slice(0, slice).map(r => r[0])
+		const data = repos.slice(0, slice).map(r => r[1])
 
 		const ctx = document.querySelector('#chart canvas').getContext('2d');
 		const chart = new Chart(ctx, {
