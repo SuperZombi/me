@@ -13,33 +13,122 @@
 			align-items: center;
 			background: radial-gradient(circle, #1a1a1a, #000);
 			font-family: Arial, sans-serif;
+			color: #fff;
 		}
 
-		button {
-			padding: 25px 50px;
-			font-size: 22px;
+		.container {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 24px;
+		}
+
+		.heart-btn {
+			position: relative;
+			width: 180px;
+			height: 180px;
+			background: transparent;
 			border: none;
-			border-radius: 16px;
-			background: #ff2e63;
-			color: white;
 			cursor: pointer;
-			box-shadow: 0 0 20px rgba(255, 46, 99, 0.6);
-			transition: 0.2s;
+			display: grid;
+			place-items: center;
+			padding: 0;
 		}
 
-		button:hover {
-			transform: scale(1.05);
-			background: #ff0044;
+		.heart {
+			position: relative;
+			width: 100px;
+			height: 90px;
+			transform: rotate(-45deg) scale(1);
+			transition: filter 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+			background: linear-gradient(145deg, #6b6b6b, #3f3f3f);
+			border-radius: 8px;
+			box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.35), inset 4px 4px 8px rgba(255, 255, 255, 0.08);
 		}
 
-		button:active {
-			transform: scale(0.95);
+		.heart::before,
+		.heart::after {
+			content: "";
+			position: absolute;
+			width: 100px;
+			height: 90px;
+			background: inherit;
+			border-radius: 50%;
+		}
+
+		.heart::before {
+			top: -50px;
+			left: 0;
+		}
+
+		.heart::after {
+			top: 0;
+			left: 50px;
+		}
+
+		/* Нерaбочее сердце: холодное и с "трещиной" */
+		.heart-btn:not(.active) .heart::selection {
+			background: transparent;
+		}
+
+		.heart-btn:not(.active) .heart {
+			filter: grayscale(0.4);
+		}
+
+		.heart-btn:not(.active) .heart-break {
+			position: absolute;
+			width: 7px;
+			height: 95px;
+			background: linear-gradient(180deg, rgba(230, 230, 230, 0.95), rgba(140, 140, 140, 0.85));
+			transform: rotate(20deg);
+			border-radius: 3px;
+			left: 92px;
+			top: 45px;
+			opacity: 0.85;
+			z-index: 5;
+			pointer-events: none;
+		}
+
+		/* Активное сердце: тёплое и пульсирующее */
+		.heart-btn.active .heart {
+			background: linear-gradient(145deg, #ff3b62, #ff0f47);
+			box-shadow:
+				0 0 26px rgba(255, 50, 95, 0.65),
+				0 0 48px rgba(255, 30, 75, 0.45),
+				inset -5px -5px 10px rgba(0, 0, 0, 0.2),
+				inset 5px 5px 10px rgba(255, 255, 255, 0.2);
+			animation: beat 1.08s infinite ease-in-out;
+		}
+
+		.heart-btn.active .heart-break {
+			display: none;
+		}
+
+		@keyframes beat {
+			0%, 100% { transform: rotate(-45deg) scale(1); }
+			20% { transform: rotate(-45deg) scale(1.13); }
+			35% { transform: rotate(-45deg) scale(1); }
+			55% { transform: rotate(-45deg) scale(1.07); }
+			70% { transform: rotate(-45deg) scale(1); }
+		}
+
+		.status {
+			font-size: 20px;
+			letter-spacing: 0.2px;
+			opacity: 0.92;
+			text-align: center;
 		}
 	</style>
 </head>
 <body>
 
-<button id="btn">Запустить ❤️</button>
+<div class="container">
+	<button id="btn" class="heart-btn" aria-pressed="false" aria-label="Переключить сердцебиение">
+		<span class="heart"></span>
+		<span class="heart-break"></span>
+	</button>
+	<div id="status" class="status">Сердце не активно</div>
+</div>
 
 <script>
 	let isRunning = false;
@@ -73,16 +162,21 @@
 	}
 
 	const btn = document.getElementById("btn");
+	const status = document.getElementById("status");
 
 	btn.addEventListener("click", () => {
 		isRunning = !isRunning;
 
 		if (isRunning) {
 			start();
-			btn.textContent = "Остановить 💔";
+			btn.classList.add("active");
+			btn.setAttribute("aria-pressed", "true");
+			status.textContent = "Сердце активно и бьётся";
 		} else {
 			stop();
-			btn.textContent = "Запустить ❤️";
+			btn.classList.remove("active");
+			btn.setAttribute("aria-pressed", "false");
+			status.textContent = "Сердце не активно";
 		}
 	});
 </script>
