@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name='viewport' content='width=device-width, initial-scale=1'>
@@ -7,85 +7,61 @@
 	<style>
 		body {
 			margin: 0;
-			height: 100vh;
+			height: 100dvh;
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			background: radial-gradient(circle, #1a1a1a, #000);
-			font-family: Arial, sans-serif;
+			background: radial-gradient(circle, #333, #000);
+			font-family: sans-serif;
 		}
-
-		button {
-			padding: 25px 50px;
-			font-size: 22px;
-			border: none;
-			border-radius: 16px;
-			background: #ff2e63;
-			color: white;
+		.heart {
+			border-radius: 50%;
+			width: 300px;
+			height: 300px;
 			cursor: pointer;
-			box-shadow: 0 0 20px rgba(255, 46, 99, 0.6);
-			transition: 0.2s;
+			filter: grayscale(1);
+			user-select: none;
 		}
-
-		button:hover {
-			transform: scale(1.05);
-			background: #ff0044;
+		.heart.active{
+			filter: drop-shadow(0 0 26px rgba(255, 50, 95, 0.65));
+			animation: beat 1s infinite ease-in-out;
 		}
-
-		button:active {
-			transform: scale(0.95);
+		@keyframes beat {
+			0%, 100% { transform: scale(1); }
+			20% { transform: scale(1.13); }
+			35% { transform: scale(1); }
+			55% { transform: scale(1.07); }
+			70% { transform: scale(1); }
 		}
 	</style>
 </head>
 <body>
 
-<button id="btn">Запустить ❤️</button>
+<img id="btn" class="heart" src="heart.png" draggable="false"/>
 
 <script>
-	let isRunning = false;
 	let timeout = null;
-
-	// Один цикл сердцебиения (lub-dub)
 	function heartbeatCycle() {
-		if (!isRunning) return;
-
-		// Первый удар (сильнее)
-		navigator.vibrate(120);
-
+		navigator.vibrate(120)
 		timeout = setTimeout(() => {
-			// Второй удар (слабее)
-			navigator.vibrate(80);
-
-			// Случайная пауза между ударами (чуть "живее")
+			navigator.vibrate(80)
 			const nextDelay = 700 + Math.random() * 300;
-
-			timeout = setTimeout(heartbeatCycle, nextDelay);
-		}, 180); // пауза между lub и dub
-	}
-
-	function start() {
-		heartbeatCycle();
-	}
-
-	function stop() {
-		clearTimeout(timeout);
-		navigator.vibrate(0);
+			timeout = setTimeout(heartbeatCycle, nextDelay)
+		}, 180)
 	}
 
 	const btn = document.getElementById("btn");
-
 	btn.addEventListener("click", () => {
-		isRunning = !isRunning;
-
+		let isRunning = btn.classList.contains("active")
 		if (isRunning) {
-			start();
-			btn.textContent = "Остановить 💔";
+			btn.classList.remove("active")
+			clearTimeout(timeout)
+			navigator.vibrate(0)
 		} else {
-			stop();
-			btn.textContent = "Запустить ❤️";
+			btn.classList.add("active")
+			heartbeatCycle()
 		}
-	});
+	})
 </script>
-
 </body>
 </html>
