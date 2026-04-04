@@ -7,8 +7,15 @@
 	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<style>
 		body{
+			margin: 0;
+			height: 100dvh;
 			font-family: sans-serif;
+			display: flex;
+			flex-direction: column;
 			text-align: center;
+		}
+		#chart{
+			height: 100%;
 		}
 		.hide{
 			display: none;
@@ -25,7 +32,9 @@
 	<button id="btn">OK</button>
 </p>
 
-<canvas id="sizeChart"></canvas>
+<div id="chart">
+	<canvas></canvas>
+</div>
 
 <p id="loader" class="hide">
 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="48" fill="#666">
@@ -63,10 +72,12 @@
 
 			document.querySelector("#loader").classList.remove("hide")
 			document.querySelector("#error").classList.add("hide")
+			document.querySelector('#chart').classList.add("hide")
 
 			getReposSizes(username).then(data=>{
 				destroy_chart = buildChart(data)
 				document.querySelector("#loader").classList.add("hide")
+				document.querySelector('#chart').classList.remove("hide")
 			}).catch(err=>{
 				document.querySelector("#loader").classList.add("hide")
 				document.querySelector("#error").classList.remove("hide")
@@ -95,7 +106,7 @@
 		const labels = repos.map(r => r[0])
 		const data = repos.map(r => r[1])
 
-		const ctx = document.getElementById('sizeChart').getContext('2d');
+		const ctx = document.querySelector('#chart canvas').getContext('2d');
 		const chart = new Chart(ctx, {
 			type: 'bar',
 			data: {
@@ -107,6 +118,8 @@
 				}]
 			},
 			options: {
+				responsive: true,
+				maintainAspectRatio: false,
 				indexAxis: 'y',
 				scales: {
 					x: {
