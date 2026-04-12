@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Мой первый сайт</title>
+  <link rel="shortcut icon" href="images/books.ico" type="image/x-icon">
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/button.css" />
+  <link rel="stylesheet" href="styles/cursor.css" />
+  <link rel="stylesheet" href="styles/image.css" />
+  <link rel="stylesheet" href="styles/menu.css" />
+  <link rel="stylesheet" href="styles/table.css" />
+  <link rel="stylesheet" href="styles/img_popup.css" />
+  <link rel="stylesheet" href="styles/hide_body.css" />
+  <script src="script/table.js"></script>
+  <script src="script/img_popup.js"></script>
+  <script src="script/hot_keys.js"></script>
+  <script src="script/hide_body.js"></script>
+
+</head>
+
+<body onkeyup="hotkey(event)" class="body_hide">
+<noscript>
+  <style>.body_hide{opacity: 1 !important;}</style>
+  <p>Ваш браузер не поддерживает скрипты!</p>
+</noscript>
+
+<div class="menu" id="key_menu">
+  <div id="shadow">Меню сайта:</div>
+  <div id="font1">Меню сайта:</div>
+  <ul>
+  <li><a href="index.html" class="button"><font color="red">Главная</font></a></li>
+  <li><a href="school.html" class="button">Любимые школьные предметы</a></li>
+  <li><a href="lang.html" class="button">Языки программирования</a></li>
+  <li><a href="hoby.html" class="button">Хобби</a></li>
+  <li><a href="future.html" class="button">Планы на будущее</a>
+  	<ul>
+  	<li><a href="future/prof.html" class="button_small">Профессиональные</a></li>
+  	<li><a href="future/study.html" class="button_small">Образовательные</a></li>
+  	<li><a href="future/life.html" class="button_small">Житейские</a></li>
+  	</ul>
+  </ul>
+</div>
+
+<form action="http://www.google.com/search" target="blank" class="optekan">
+<p align="right"><input type="search" name="q" placeholder="Поиск в Google" required> 
+<input type="submit" value="Найти"></p>
+</form>
+
+<a href="canvas.html" class="feedback_href">
+<h3 align="left">Посмотреть красоту😍</h3>
+</a>
+
+<p align="center"><img onClick="show();" class="img_button" src="images/photo.jpg" width="300" height="300"></p>
+
+<div align="center" id="myModal" class="modal">
+  <div class="modal-content">
+    <div align="right" class="close" onClick="hide();">&times;</div>
+      <img align="center" class="content" src="images/photo.jpg">
+  </div>
+</div>
+
+<details align="center">
+<table border = 1; align = center>
+<caption><h1>Личные данные:</h1></caption>
+  <tr id="box1" onMouseover="changeTo(id);" onMouseout="changeBack(id);"><td>ФИО:</td><td>Ростислав</td></tr>
+  <tr id="box2" onMouseover="changeTo(id);" onMouseout="changeBack(id);"><td>Пол:</td><td>Мужской</td></tr>
+  <tr id="box3" onMouseover="changeTo(id);" onMouseout="changeBack(id);"><td>Дата рождения:</td><td>16 сентября</td></tr>
+  <tr id="box4" onMouseover="changeTo(id);" onMouseout="changeBack(id);"><td>Место рождения:</td><td>Харьков</td></tr>
+  <tr id="box5" onMouseover="changeTo(id);" onMouseout="changeBack(id);"><td>Гражданство:</td><td>Украина</td></tr>
+  <tr id="box6" onMouseover="changeTo(id);" onMouseout="changeBack(id);"><td>Семейный статус:</td><td>нет</td></tr>
+  <tr id="box7" onMouseover="changeTo(id);" onMouseout="changeBack(id);"><td>Домашний адрес:</td><td>Харьков</td></tr>
+  <tr id="box8" onMouseover="changeTo(id);" onMouseout="changeBack(id);"><td>Телефон:</td><td>+3801234567890</td></tr>
+  <tr id="box9" onMouseover="changeTo(id);" onMouseout="changeBack(id);"><td>Email:</td><td>example@gmail.com</td></tr>
+  </tr>
+</table>
+</details>
+<hr>
+
+<div class="menu_blocks_center" id="key">
+  <span class="menu_blocks">
+    <h1>Владение иностранными языками:</h1>
+      <table align = center>
+      <tr><td>
+      <ul>
+        <li align="left"><font size="4">Английский: средняя степень владения</font></li>
+      </ul>
+      </td></tr>
+    </table>
+  </span>
+
+  <span class="menu_blocks">
+    <h1 align="center">Научные интересы:</h1>
+    <table align = center>
+      <tr><td>
+      <ol>
+      	<li align="left"><font size="4">Космос</font></li>
+      	<li align="left"><font size="4">Нейроные сети</font></li>
+      </ol>
+      </td></tr>
+    </table>
+  </span>
+</div>
+<hr>
+<a href="feedback.html" class="feedback_href">
+<h3 align="right" class="feedback">Оставить отзыв</h3>
+</a>
+<a href="feedback_html5.html" class="feedback_href">
+<h3 align="right" class="feedback">Отзыв HTML5</h3>
+</a>
+<div align="center" >
+<audio controls autoplay>
+    <source src="audio/hello.mp3" type="audio/mpeg">
+    Тег audio не поддерживается вашим браузером. 
+</audio>
+</div>
+</body>
+</html>

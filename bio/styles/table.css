@@ -1,0 +1,10 @@
+tr:nth-child(2n) {
+background: #ffffff54;
+}
+
+.light{
+	background: yellow !important;
+	transition: 0.1s all linear;
+}
+
+.dark{}

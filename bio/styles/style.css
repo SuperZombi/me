@@ -1,0 +1,36 @@
+@media all and (color){
+body {
+	background: linear-gradient(#ffb35c, #69cf3a) fixed;}
+}
+@media all and (not color){
+body {background-color: gray;}
+}
+@media all and (not handheld){
+body {background-color: #ffb35c;}
+}
+
+#font1{
+	position: absolute;
+	top		: 14px;
+	left		: 12;
+
+	font: bold 24pt Bips;
+	background: linear-gradient(to right, #07f, #7109AA);
+	
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+
+	-webkit-text-stroke: 1px black;
+	
+	text-align: center;
+	width: 470px;
+}
+#shadow{
+	position: relative;
+	font: bold 24pt Bips;
+	text-shadow: gray 4px 5px 5px;
+	text-align: center;
+	width: 470px;
+	color: transparent;
+}

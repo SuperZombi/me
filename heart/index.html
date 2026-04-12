@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+	<title>Heart</title>
+	<style>
+		body {
+			margin: 0;
+			height: 100dvh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background: radial-gradient(circle, #333, #000);
+			font-family: sans-serif;
+		}
+		.heart {
+			border-radius: 50%;
+			width: 300px;
+			height: 300px;
+			cursor: pointer;
+			filter: grayscale(1);
+			user-select: none;
+		}
+		.heart.active{
+			filter: drop-shadow(0 0 26px rgba(222, 24, 36, 0.85));
+			animation: beat 1s infinite ease-in-out;
+		}
+		@keyframes beat {
+			0%, 100% { transform: scale(1); }
+			20% { transform: scale(1.13); }
+			35% { transform: scale(1); }
+			55% { transform: scale(1.07); }
+			70% { transform: scale(1); }
+		}
+	</style>
+</head>
+<body>
+
+<img id="btn" class="heart" src="heart.png" draggable="false"/>
+
+	<script>
+		let timeout = null;
+		const btn = document.getElementById("btn");
+		const gamepadButtonState = new Map();
+		const ACTION_BUTTON_INDEX = 0;
+
+		function getGamepadActuators(gamepad) {
+			return [gamepad?.vibrationActuator, ...(gamepad?.hapticActuators || [])].filter(Boolean);
+		}
+
+		function vibrateGamepads(duration, magnitude = 1) {
+			for (const gamepad of navigator.getGamepads?.() || []) {
+				for (const actuator of getGamepadActuators(gamepad)) {
+					if (typeof actuator.playEffect === "function") {
+						actuator.playEffect("dual-rumble", {
+							startDelay: 0,
+							duration,
+							strongMagnitude: magnitude,
+							weakMagnitude: magnitude
+						}).catch(() => {});
+					} else if (typeof actuator.pulse === "function") {
+						actuator.pulse(magnitude, duration);
+					}
+				}
+			}
+		}
+
+		function vibrateAll(duration) {
+			navigator.vibrate(duration);
+			vibrateGamepads(duration);
+		}
+
+		function stopVibration() {
+			navigator.vibrate(0);
+			vibrateGamepads(1, 0);
+		}
+
+		function heartbeatCycle() {
+			vibrateAll(120);
+			timeout = setTimeout(() => {
+				vibrateAll(80);
+				const nextDelay = 700 + Math.random() * 300;
+				timeout = setTimeout(heartbeatCycle, nextDelay);
+			}, 180);
+		}
+
+		function setHeartbeat(isRunning) {
+			btn.classList.toggle("active", isRunning);
+			clearTimeout(timeout);
+			if (isRunning) {
+				heartbeatCycle();
+			} else {
+				stopVibration();
+			}
+		}
+
+		function toggleHeartbeat() {
+			setHeartbeat(!btn.classList.contains("active"));
+		}
+
+		function watchGamepadActionButton() {
+			for (const gamepad of navigator.getGamepads?.() || []) {
+				if (!gamepad) continue;
+				const isPressed = Boolean(gamepad.buttons?.[ACTION_BUTTON_INDEX]?.pressed);
+				const wasPressed = gamepadButtonState.get(gamepad.index) || false;
+				if (isPressed && !wasPressed) {
+					toggleHeartbeat();
+				}
+				gamepadButtonState.set(gamepad.index, isPressed);
+			}
+			requestAnimationFrame(watchGamepadActionButton);
+		}
+
+		btn.addEventListener("click", toggleHeartbeat);
+		requestAnimationFrame(watchGamepadActionButton);
+	</script>
+</body>
+</html>

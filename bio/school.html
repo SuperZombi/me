@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Школьные предметы</title>
+	<link rel="stylesheet" href="styles/style.css" />
+	<link rel="stylesheet" href="styles/button.css" />
+	<link rel="stylesheet" href="styles/cursor.css" />
+	<link rel="stylesheet" href="styles/table.css" />
+	<link rel="stylesheet" href="styles/hide_body.css" />
+	<link rel="shortcut icon" href="images/books.ico" type="image/x-icon">
+	<script src="script/table.js"></script>
+	<script src="script/hide_body.js"></script>
+</head>
+<body class="body_hide">
+<noscript>
+  <style>.body_hide{opacity: 1 !important;}</style>
+</noscript>
+
+<a href="index.html" class="button">Вернуться</a>
+<p><strong><font size="5">Мои любимые школьные предметы:</font></strong></p>
+
+<table border = 1>
+<tr id="box1" onMouseover="changeTo(id);" onMouseout="changeBack(id);"><td colspan="2"; align = center><font size="4">Математика</font></td></tr>
+
+<tr id="box2" onMouseover="changeTo(id);" onMouseout="changeBack(id);"><td colspan="2"; align = center><font size="4">Информатика</font></td></tr>
+
+<tr id="box3" onMouseover="changeTo(id);" onMouseout="changeBack(id);"><td colspan="2"; align = center><font size="4">Физика</font></td></tr>
+
+<tr id="box4" onMouseover="changeTo(id);" onMouseout="changeBack(id);"><td colspan="2"; align = center><font size="4">Литература</font></td></tr>
+<tr id="box5" onMouseover="changeTo(id);" onMouseout="changeBack(id);">
+<td align = center><font size="3">Украинская</font></td>
+<td align = center><font size="3">Зарубежная</font></td>
+</tr>
+</table>
+</body>
+</html>

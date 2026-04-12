@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Языки программирования</title>
+	<link rel="stylesheet" href="styles/style.css" />
+	<link rel="stylesheet" href="styles/button.css" />
+	<link rel="stylesheet" href="styles/cursor.css" />
+	<link rel="stylesheet" href="styles/backlight.css" />
+	<link rel="stylesheet" href="styles/hide_body.css" />
+	<link rel="shortcut icon" href="images/books.ico" type="image/x-icon">
+	<script src="script/show.js"></script>
+	<script src="script/link.js"></script>
+	<script src="script/hide_body.js"></script>
+</head>
+<body class="body_hide">
+<noscript>
+  <style>.body_hide{opacity: 1 !important;}</style>
+</noscript>
+
+<a href="index.html" class="button">Вернуться</a>
+<p><a onClick="link('https://ru.wikipedia.org/wiki/%D0%98%D1%81%D0%BA%D1%83%D1%81%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D1%8B%D0%B9_%D0%B8%D0%BD%D1%82%D0%B5%D0%BB%D0%BB%D0%B5%D0%BA%D1%82');" class="button_small">Что я знаю об искусственном интеллекте</a></p>
+
+<p><strong><font size="5">Знаю следующие языки программирования:</font></strong></p>
+<ul class="backlight_show_alls">
+
+<li><a href="#" class="backlight" onclick="showHide('block1')">Python</a>
+<div id="block1" class="backlight_show" style="display: none;">Мой любимый язык программирования. Пишу на нем большинство своих программ. Имею большой опыт разработки на этом языке.<hr></div></li>
+
+<li><a href="#" class="backlight" onclick="showHide('block2')">C++</a>
+<div id="block2" class="backlight_show" style="display: none;">Изучал на первом курсе в университете. Имею базовые знания о языке.<hr></div></li>
+
+<li><a href="#" class="backlight" onclick="showHide('block3')">C#</a>
+<div id="block3" class="backlight_show" style="display: none;">Изучаю на втором курсе в университете. Не имею пока что никаких знаний о языке.<hr></div></li>
+
+<li><a href="#" class="backlight" onclick="showHide('block4')">HTML</a>
+<div id="block4" class="backlight_show" style="display: none;">Не считается как полноценный язык программирования. Приходилось раньше работать с этим языком разметки. Имею базовые знания.<hr></div></li>
+
+<li><a href="#" class="backlight" onclick="showHide('block5')">CSS</a>
+<div id="block5" class="backlight_show" style="display: none;">Формальный язык описания внешнего вида документа. Приходилось раньше работать с этим языком. Имею базовые знания о нём.<hr></div></li>
+
+<li><a href="#" class="backlight" onclick="showHide('block6')">JavaScript</a>
+<div id="block6" class="backlight_show" style="display: none;">Начал изучать на втором курсе университета. До этого момента никогда не работал с этим языком программирования.<hr></div></li>
+
+</ul>
+</body>
+</html>

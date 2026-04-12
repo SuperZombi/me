@@ -1,0 +1,102 @@
+body{
+	height: 100dvh;
+	margin: 0;
+	padding: 0;
+}
+.pages{
+	display: flex;
+	justify-content: center;
+	height: 100%;
+	align-items: center;
+	perspective: 1000px;
+	overflow: hidden;
+}
+.page{
+	height: min(600px, 90dvh);
+	min-width: min(400px, 95vw);
+	max-width: min(400px, 95vw);
+	background-image: url('page.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	backface-visibility: hidden;
+}
+.page_back {
+	background-image: url('title_page.png');
+	transform: rotateY(180deg);
+	position: absolute;
+	inset: 0;
+}
+.left_page{
+	transform-style: preserve-3d;
+	transition: 1s;
+	z-index: 2;
+	transform-origin: right center;
+}
+.left_page.close{
+	transform: rotateY(180deg);
+}
+.handtext{
+	font-family: "Caveat", cursive;
+	font-size: 24pt;
+	word-spacing: 5px;
+	transition: 1s;
+	width: 80%;
+	text-align: center;
+	word-break: break-word;
+}
+.handtext.big{
+	font-size: 32pt;
+}
+input#gamename{
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+}
+.button{
+	z-index: 1;
+	border-bottom: 2px solid;
+	padding: 0 8px;
+	font-family: "Playwrite DE SAS", cursive;
+	cursor: pointer;
+	transition: padding 0.15s, transform 0.15s, opacity 0.5s;
+	user-select: none;
+	opacity: 0;
+	margin-top: 2rem;
+	pointer-events: none;
+	font-weight: bold;
+}
+.button.visible{
+	opacity: 1;
+	pointer-events: all;
+}
+.button:hover{
+	padding: 0 16px;
+}
+.button:active{
+	padding: 0 16px;
+	transform: translateY(3px);
+}
+
+.label {
+	position: absolute;
+	top: 15%;
+}
+.hide {
+	opacity: 0;
+}
+
+@media (max-width: 768px){
+	.left_page {
+		position: absolute;
+		transform: translateX(-100%);
+	}
+	.left_page.close{
+		transform: rotateY(180deg) translateX(100%);
+	}
+}

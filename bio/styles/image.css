@@ -1,0 +1,13 @@
+img{
+	box-shadow: black 5px 5px 15px;
+}
+
+img.optekan{
+	display: block;
+	width: 100%;
+	height: auto;
+}
+.optekan{
+	float: right;
+	margin: 10px;
+}

@@ -1,0 +1,146 @@
+body{
+  font-family: sans-serif;
+  background: #34495e;
+}
+::-webkit-scrollbar {width:0px;}
+
+
+.box{
+  width: 300px;
+  padding: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background: #191919;
+  text-align: center;
+  border-radius: 15px;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+@keyframes animatetop {
+    from {opacity:0}
+    to {opacity:1}
+}
+
+.box h1{
+  color: white;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.box input[type = "text"]{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #3498db;
+  padding: 14px 10px;
+  width: 200px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+}
+.box input[type = "text"]:focus{
+  width: 280px;
+  border-color: yellow !important;
+}
+.box input[type = "email"]{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #3498db;
+  padding: 14px 10px;
+  width: 200px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+}
+.box input[type = "email"]:focus{
+  width: 280px;
+  border-color: yellow !important;
+}
+.box textarea[type = "coment"]{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #3498db;
+  padding: 14px 10px;
+  height: 100px;
+  width: 200px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+  resize: none;
+}
+.box textarea[type = "coment"]:focus{
+  width: 280px;
+  border-color: yellow !important;
+}
+.cant_submit{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid grey;
+  padding: 14px 40px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+.cant_submit:hover{
+  cursor: not-allowed;
+  background: none;
+}
+
+.can_submit{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #2ecc71 !important;
+  padding: 14px 40px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+.can_submit:hover{
+  background: #2ecc71 !important;
+}
+
+.not_correct{
+  border-color: red !important;
+}
+.correct{
+  border-color: green !important;
+}
+
+.counter{
+  position: absolute;
+  top: 425px;
+  left: 310px;
+  color: white;
+  opacity: 0;
+  transition: 0.1s all linear;
+}
+.counter_visible{
+  opacity: 1;
+  transition: 0.2s all linear;
+  position: absolute;
+  top: 425px;
+  left: 310px;
+  color: white;
+}
