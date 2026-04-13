@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Game</title>
+<style>
+body{
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+:root.dark {
+	color-scheme: dark;
+}
+:root.dark #main{
+	background: #994B00;
+}
+#screen{
+	transform-style: preserve-3d;
+	perspective: 1000px;
+	height: 100vh;
+	width: 100vw;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+.ui{
+	position: fixed;
+	font-family: sans-serif;
+	z-index: 100;
+}
+.ui-top{
+	top: 0;
+	height: 50px;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+#fps{
+	font-size: 24pt;
+	font-weight: bold;
+	margin-left: 5px;
+	float: left;
+}
+.camera_menu{
+	float: right;
+	display: flex;
+	margin-top: 5px;
+	flex-direction: row-reverse;
+}
+.camera_menu > button{
+	display: none;
+	font-size: 16pt;
+	cursor: pointer;
+	margin-right: 10px;
+}
+.camera_menu > button:first-child{
+	display: inline-block;
+}
+.camera_menu:hover > button{
+	display: inline-block;
+}
+#main{
+	transform: rotateX(60deg);
+	background: #f7a85a;
+	padding: 150px;
+	user-select: none;
+	cursor: grab;
+	transform-style: preserve-3d;
+}
+.box{
+	content:"";
+	position: absolute;
+	background: #753611;
+}
+.box.front{
+	height: 50px;
+	width: 100%;
+	left: 0;
+	bottom: -50px;
+	transform: rotateX(-90deg);
+	transform-origin: top;
+}
+.box.back{
+	height: 50px;
+	width: 100%;
+	left: 0;
+	top: -50px;
+	transform: rotateX(90deg);
+	transform-origin: bottom;
+}
+.box.left{
+	height: 100%;
+	width: 50px;
+	left: -50px;
+	top: 0;
+	transform: rotateY(-90deg);
+	transform-origin: right;
+}
+.box.right{
+	height: 100%;
+	width: 50px;
+	right: -50px;
+	top: 0;
+	transform: rotateY(90deg);
+	transform-origin: left;
+}
+
+.row{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+}
+.block{
+	height: 100px;
+	width: 100px;
+	transition: 0.3s ease-out;
+	cursor: pointer;
+}
+.row:nth-child(odd) .block:nth-child(odd), .row:nth-child(even) .block:nth-child(even) {
+	background: black;
+}
+.row:nth-child(even) .block:nth-child(odd), .row:nth-child(odd) .block:nth-child(even) {
+	background: white;
+}
+.row:nth-child(odd) .block:nth-child(odd):hover, .row:nth-child(even) .block:nth-child(even):hover {
+	background: blue;
+}
+.row:nth-child(even) .block:nth-child(odd):hover, .row:nth-child(odd) .block:nth-child(even):hover {
+	background: #00C0FF;
+}
+
+.dont_hover .row:nth-child(odd) .block:nth-child(odd), .dont_hover .row:nth-child(even) .block:nth-child(even) {
+	background: black;
+	cursor: unset;
+}
+.dont_hover .row:nth-child(even) .block:nth-child(odd), .dont_hover .row:nth-child(odd) .block:nth-child(even) {
+	background: white;
+	cursor: unset;
+}
+
+:root.dark .row:nth-child(even) .block:nth-child(odd), :root.dark .row:nth-child(odd) .block:nth-child(even) {
+	background: lightgrey;
+}
+:root.dark .row:nth-child(even) .block:nth-child(odd):hover, :root.dark .row:nth-child(odd) .block:nth-child(even):hover {
+	background: #00C0FF;
+}
+:root.dark .dont_hover .row:nth-child(even) .block:nth-child(odd), :root.dark .dont_hover .row:nth-child(odd) .block:nth-child(even) {
+	background: lightgrey;
+}
+
+</style>
+</head>
+<body>
+	<div id="screen">
+
+		<div class="ui ui-top">
+			<div id="fps">0</div>
+			<div class="camera_menu">
+				<button>Camera</button>
+				<button id="reset_camera">Reset</button>
+				<button id="set_camera_front">Front</button>
+			</div>
+		</div>
+
+		<div id="main">
+			<div class="box front"></div>
+			<div class="box left"></div>
+			<div class="box right"></div>
+			<div class="box back"></div>
+
+			<div class="row">
+				<div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div>
+			</div>
+			<div class="row">
+				<div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div>
+			</div>
+			<div class="row">
+				<div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div>
+			</div>
+			<div class="row">
+				<div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div>
+			</div>
+			<div class="row">
+				<div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div>
+			</div>
+			<div class="row">
+				<div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div>
+			</div>
+			<div class="row">
+				<div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div>
+			</div>
+			<div class="row">
+				<div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div>
+			</div>
+			
+		</div>
+
+	</div>
+	
+
+
+<script type="text/javascript">
+	var startX, startY;
+	var cameraX = cameraY = 0;
+	var inclineY = 60;
+	var inclineZ = 0;
+	var scrollPos = 1;
+	var fps_calc = 0;
+	var fps_limit = 60;
+	var smoothZoom = true;
+	var theme = 'auto';
+	//var fps_update = 1000/fps_limit;
+	var fps_update = 0;
+
+	var screen = document.querySelector("#screen")
+	var main = document.querySelector("#main")
+	var fps_el = document.querySelector("#fps")
+
+	calc_fps()
+	updateCamera()
+	var mouseDown = false;
+	var ctrlDown = false;
+
+	if (theme == "auto"){
+		let darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)").matches
+		if (darkThemeMq) {
+			theme = "dark"
+		}
+	}
+	if (theme == "dark"){
+		document.documentElement.classList.add(theme);
+	}
+	window.addEventListener("contextmenu", e => e.preventDefault());
+	window.onkeydown = (e)=>{
+		if (e.keyCode == 17) ctrlDown = true
+	}
+	window.onkeyup = (e)=>{
+		if (e.keyCode == 17) ctrlDown = false
+	}
+	screen.onmousedown = (e)=>{
+		screen.style.cursor = "grabbing"
+		main.style.cursor = "grabbing"
+		main.classList.add("dont_hover")
+		mouseDown = true;
+		startX = e.clientX;
+		startY = e.clientY;
+	}
+	screen.onmouseup = (e)=>{
+		screen.style.cursor = ""
+		main.style.cursor = "grab"
+		main.classList.remove("dont_hover")
+		mouseDown = false;
+	}
+	var blockUpdates = false;
+	screen.onmousemove = (e)=>{
+		if(mouseDown === true){
+			if (!blockUpdates){
+				blockUpdates = true;
+
+				if (smoothZoom){
+					if (scrollInterval){
+						clearTimeout(scrollInterval)
+						main.style.transition = "0.1s ease"
+						scrollInterval = setTimeout(()=>{main.style.transition = ""},100)
+					}
+				}
+
+				let tempX = e.clientX - startX;
+				let tempY = e.clientY - startY;
+
+				if (ctrlDown){
+					tempX = tempX/10;
+					tempY = tempY/10;
+					inclineZ = inclineZ - tempX;
+					inclineY = Math.max(Math.min(inclineY - tempY, 85) , 0);
+				}
+				else{
+					cameraX += tempX * Math.cos(-inclineZ * Math.PI / 180) - tempY * Math.sin(-inclineZ * Math.PI / 180)
+					cameraY += tempX * Math.sin(-inclineZ * Math.PI / 180) + tempY * Math.cos(-inclineZ * Math.PI / 180)
+				}
+
+				startX = e.clientX;
+				startY = e.clientY;
+
+				updateCamera()
+				setTimeout(()=>{blockUpdates = false;}, fps_update)		
+			}
+		}
+	}
+
+	var scrollInterval;
+	screen.onwheel = (e)=>{
+		if (smoothZoom){
+			if (scrollInterval) clearTimeout(scrollInterval);
+			main.style.transition = "0.2s ease"
+		}
+
+		let tempscroll = parseInt(e.deltaY)/2000
+		scrollPos = Math.min( Math.max(scrollPos - tempscroll, 0.5) , 2);
+		updateCamera()
+
+		if (smoothZoom){
+			scrollInterval = setTimeout(_=>{
+				main.style.transition = ""
+			}, 200)
+		}
+	}
+
+	function updateCamera(){
+		fps_calc += 1
+		main.style.transform = `rotateX(${inclineY}deg)
+								rotateZ(${inclineZ}deg)
+								translate(${cameraX}px, ${cameraY}px)
+								scale(${scrollPos})`
+	}
+	function calc_fps() {
+		fps_el.innerHTML = fps_calc;
+		fps_calc = 0;
+		setTimeout(calc_fps, 1000)
+	}
+
+	var camera_animation;
+	document.querySelector("#reset_camera").onclick = function() {
+		if (camera_animation) clearTimeout(camera_animation);
+		main.style.transition = "1s ease"
+		cameraX = cameraY = 0;
+		inclineY = 60;
+		inclineZ = 0;
+		scrollPos = 1;
+		updateCamera()
+		camera_animation = setTimeout(_=>{
+			main.style.transition = ""
+		}, 1000)
+	}
+	document.querySelector("#set_camera_front").onclick = function() {
+		if (camera_animation) clearTimeout(camera_animation);
+		main.style.transition = "1s ease"
+		cameraX = cameraY = 0;
+		inclineY = 0;
+		inclineZ = 0;
+		scrollPos = 0.8;
+		updateCamera()
+		camera_animation = setTimeout(_=>{
+			main.style.transition = ""
+		}, 1000)
+	}
+
+	var currentElement;
+	function clickedOnBlock(event, row, index, element){
+		if (currentElement){
+			currentElement.style.background = ""
+		}
+		if (currentElement == element){
+			currentElement = null;
+		}
+		else{
+			element.style.background = "red";
+			currentElement = element
+		}
+		//console.log(row, index)
+	}
+
+	let rows = document.getElementById("main").querySelectorAll(".row")
+	rows.forEach(function(row, row_index){
+		let blocks = row.querySelectorAll(".block")
+		blocks.forEach(function(block, block_index){
+			block.onmousedown = function(e){
+				if (event.which == 1){
+					setTimeout(()=>{
+						if (!mouseDown){
+							clickedOnBlock(e, row_index, block_index, block)
+						}
+					}, 100)
+				}
+			}
+		})
+	})
+</script>
+</body>
+</html>
