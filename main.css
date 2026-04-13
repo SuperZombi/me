@@ -14,13 +14,16 @@ body {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	gap: 1rem 4rem;
+	gap: 2rem 4rem;
+	padding: 1rem;
 }
 
 .category-title {
 	letter-spacing: 2px;
 	opacity: 0.8;
 	text-align: center;
+	margin-top: 0;
+	margin-bottom: 1rem;
 }
 
 .category-items {
