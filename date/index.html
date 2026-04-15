@@ -47,15 +47,17 @@ button:active {
 h2 {
 	margin: 0;
 	text-align: center;
+	user-select: none;
 }
 img {
 	padding-bottom: 3rem;
+	user-select: none;
 }
 </style>
 </head>
 <body>
 	<h2 id="mainText">Will you go out with me?</h2>
-	<img src="waiting.gif" height="200px" id="mainImg">
+	<img src="waiting.gif" height="200px" id="mainImg" draggable="false">
 	<div class="buttons-area">
 		<button id="yes">Yes</button>
 		<button id="no">No</button>
