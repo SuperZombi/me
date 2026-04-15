@@ -85,19 +85,22 @@ img {
 
 	function moveButton(e) {
 		const safeDistance = 100
+		const safeGap = 50
+		const x = e.clientX ?? (e.touches?.[0]?.clientX)
+		const y = e.clientY ?? (e.touches?.[0]?.clientY)
 		let newX, newY
 		let attempts = 0
 		do {
 			newX = Math.random() * (window.innerWidth - btnWidth)
 			newY = Math.random() * (window.innerHeight - btnHeight)
-			const dx = newX + btnWidth / 2 - e.clientX
-			const dy = newY + btnHeight / 2 - e.clientY
+			const dx = newX + btnWidth / 2 - x
+			const dy = newY + btnHeight / 2 - y
 			const distance = Math.sqrt(dx * dx + dy * dy)
 			const overlap = !(
-				newX + btnWidth < yesRect.left ||
-				newX > yesRect.right ||
-				newY + btnHeight < yesRect.top ||
-				newY > yesRect.bottom
+				newX + btnWidth + safeGap < yesRect.left ||
+				newX > yesRect.right + safeGap ||
+				newY + btnHeight + safeGap < yesRect.top ||
+				newY > yesRect.bottom + safeGap
 			)
 			if (distance > safeDistance && !overlap) break
 			attempts++
@@ -110,6 +113,9 @@ img {
 		moveButton(e)
 	})
 	btnNo.addEventListener("touchstart", (e) => {
+		moveButton(e)
+	})
+	btnNo.addEventListener("touch", (e) => {
 		moveButton(e)
 	})
 
