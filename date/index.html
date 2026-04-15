@@ -52,6 +52,7 @@ h2 {
 img {
 	padding-bottom: 3rem;
 	user-select: none;
+	pointer-events: none;
 }
 </style>
 </head>
@@ -116,6 +117,9 @@ img {
 		moveButton(e)
 	})
 	btnNo.addEventListener("touch", (e) => {
+		moveButton(e)
+	})
+	btnNo.addEventListener("click", (e) => {
 		moveButton(e)
 	})
 
