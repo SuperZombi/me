@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Date</title>
+	<meta name='viewport' content='width=device-width, initial-scale=1'>
+<style>
+body {
+	margin: 0;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+	font-family: sans-serif;
+	overflow: hidden;
+	color: #eee;
+}
+.buttons-area{
+	display: flex;
+	gap: 1rem;
+}
+button {
+	padding: 1rem 2.5rem;
+	font-size: 1rem;
+	text-transform: uppercase;
+	color: white;
+	border: none;
+	border-radius: 12px;
+	cursor: pointer;
+	background: linear-gradient(45deg, #1cb0f6, #039be5, #5468ff);
+	background-size: 200% 200%;
+	transition: all 0.3s ease;
+	box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+	user-select: none;
+	font-weight: bold;
+}
+button:hover {
+	background-position: right center;
+	transform: translateY(-3px) scale(1.03);
+	box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+}
+button:active {
+	transform: scale(0.97);
+	box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+h2 {
+	margin: 0;
+	text-align: center;
+}
+img {
+	padding-bottom: 3rem;
+}
+</style>
+</head>
+<body>
+	<h2 id="mainText">Will you go out with me?</h2>
+	<img src="waiting.gif" height="200px" id="mainImg">
+	<div class="buttons-area">
+		<button id="yes">Yes</button>
+		<button id="no">No</button>
+	</div>
+
+<script>
+	const btnYes = document.querySelector("#yes")
+	const btnNo = document.querySelector("#no")
+	const yesRect = btnYes.getBoundingClientRect()
+	const rect = btnNo.getBoundingClientRect()
+	const btnWidth = rect.width
+	const btnHeight = rect.height
+
+	function initPosition() {
+		const rect1 = btnNo.getBoundingClientRect()
+		btnNo.style.left = rect1.left + "px"
+		btnNo.style.top = rect1.top + "px"
+		const rect2 = btnYes.getBoundingClientRect()
+		btnYes.style.left = rect2.left + "px"
+		btnYes.style.top = rect2.top + "px"
+		btnNo.style.position = "absolute"
+		btnYes.style.position = "absolute"
+	}
+	window.addEventListener("load", initPosition)
+
+	function moveButton(e) {
+		const safeDistance = 100
+		let newX, newY
+		let attempts = 0
+		do {
+			newX = Math.random() * (window.innerWidth - btnWidth)
+			newY = Math.random() * (window.innerHeight - btnHeight)
+			const dx = newX + btnWidth / 2 - e.clientX
+			const dy = newY + btnHeight / 2 - e.clientY
+			const distance = Math.sqrt(dx * dx + dy * dy)
+			const overlap = !(
+				newX + btnWidth < yesRect.left ||
+				newX > yesRect.right ||
+				newY + btnHeight < yesRect.top ||
+				newY > yesRect.bottom
+			)
+			if (distance > safeDistance && !overlap) break
+			attempts++
+		} while (attempts < 30)
+		btnNo.style.left = newX + "px"
+		btnNo.style.top = newY + "px"
+	}
+
+	btnNo.addEventListener("mouseover", (e) => {
+		moveButton(e)
+	})
+	btnNo.addEventListener("touchstart", (e) => {
+		moveButton(e)
+	})
+
+	btnYes.addEventListener("click", _=>{
+		document.querySelector("#mainImg").src = "pizza.gif"
+		document.querySelector("#mainText").textContent = "Good choice"
+		document.querySelector(".buttons-area").style.display = "none"
+	})
+</script>
+</body>
+</html>
