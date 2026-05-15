@@ -4,8 +4,9 @@ const Profile = () => {
 	const MenuItem = ({icon, name, active, onClick}) => {
 		return (
 			<button className={`
-				flex items-center gap-2 px-3 py-1 ${active ? 'bg-[#3a5faa]' : 'hover:bg-[#5577bb]'
-			}`} onClick={onClick}>
+				flex items-center gap-2 ${active ? 'bg-[#3a5faa]' : 'hover:bg-[#5577bb]'}
+				${leftMenuHiden ? 'p-2 justify-center' : 'px-3 py-1'}
+			`} onClick={onClick}>
 				<i className={`fa-solid ${icon} text-xs w-4 flex justify-center items-center`}></i>
 				{leftMenuHiden ? null : <span className="text-sm">{name}</span>}
 			</button>
@@ -13,7 +14,9 @@ const Profile = () => {
 	const LeftMenu = ({active, leftMenuHiden, setLeftMenuHidden, setActiveTab}) => {
 		return (
 			<div className="bg-[#6e88dd] h-full select-none">
-				<div className="flex items-center gap-2 pl-3 pt-1 cursor-pointer" onClick={_=>setLeftMenuHidden(prev=>!prev)}>
+				<div className={`flex items-center gap-2 cursor-pointer pt-1
+					${leftMenuHiden ? 'justify-center' : 'pl-3'}
+				`} onClick={_=>setLeftMenuHidden(prev=>!prev)}>
 					<i className={`
 						fa-solid fa-angles-left text-xs w-4 flex justify-center items-center
 						${leftMenuHiden ? 'rotate-180' : ''}
@@ -35,8 +38,8 @@ const Profile = () => {
 	const Section = ({icon, title, children}) => {
 		return (
 			<div className="ring-1 ring-[#a9c0e0] rounded-sm">
-				<div className="bg-[#c3daf2] text-[#000033] text-sm px-3 py-1 flex items-center gap-2 border-b border-[#a9c0e0]">
-					<i className={`fa-solid ${icon}`}></i>
+				<div className="bg-[#c3daf2] text-gray-800 text-sm px-3 py-1 flex items-center gap-2 border-b border-[#a9c0e0]">
+					<i className={`fa-solid ${icon} text-sm flex items-center`}></i>
 					<span className="font-bold">{title}</span>
 				</div>
 				<div className="p-2">
@@ -45,9 +48,26 @@ const Profile = () => {
 			</div>
 		)
 	}
+	const Row = ({label, value, className}) => {
+		return (
+			<React.Fragment>
+				<div className="text-gray-500">
+					{label}
+				</div>
+				<div className={`text-gray-800 ${className || ''}`}>
+					{value}
+				</div>
+			</React.Fragment>
+		)
+	}
+	const [userLanguages, setUserLanguages] = React.useState(null)
+	const total = userLanguages?.reduce((sum, lang) => sum + lang.count, 0) || 0
+	React.useEffect(() => {
+		getPopularLanguages('SuperZombi').then(setUserLanguages)
+	}, [])
 	const tabs = [
 		{name: 'general', content: (
-			<React.Fragment>
+			<div className="w-max">
 				<div className="bg-[#c3daf2] p-3 flex items-center gap-3 border-b border-[#a9c0e0] whitespace-nowrap">
 					<img className="h-12 ring-2 ring-[#7090c0] rounded-sm select-none" src="https://avatars.githubusercontent.com/u/75096786" draggable={false} />
 					<div className="flex flex-col">
@@ -59,12 +79,37 @@ const Profile = () => {
 						<span className="text-[#333366] text-xs">Online</span>
 					</div>
 				</div>
-				<div className="p-3">
+				<div className="p-3 flex flex-col gap-3">
 					<Section icon={"fa-circle-info"} title="General Information">
-						Hello
+						<div className="text-xs grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-1 w-full">
+							<Row label="Pronouns:" value="he/him" />
+							<Row label="Description:" value="React Frontend Web Developer" />
+							<Row label="IP address:" value="192.168.1.101" className="font-mono" />
+						</div>
 					</Section>
+					{userLanguages && (
+						<Section icon={"fa-microchip"} title="Languages">
+							<div className="grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-1 w-full">
+								{userLanguages.map(lang => {
+									const percent = (lang.count / total) * 100
+									return (
+										<React.Fragment key={lang.language}>
+											<div className="text-xs truncate text-gray-600">
+												{lang.language}
+											</div>
+											<div className="w-full h-2.5 bg-[#ddddee] rounded-xs overflow-hidden ring-1 ring-[#aaaabb]">
+												<div className="h-full bg-[#3275dd]"
+													style={{width: `${percent}%`}}
+												/>
+											</div>
+										</React.Fragment>
+									)
+								})}
+							</div>
+						</Section>
+					)}
 				</div>
-			</React.Fragment>
+			</div>
 		)},
 		{name: 'projects', content: (
 			<div>
@@ -92,11 +137,31 @@ const Profile = () => {
 		)}
 	]
 	return (
-		<div className={`h-full grid ${leftMenuHiden ? 'grid-cols-[40px_1fr]' : 'grid-cols-[clamp(120px,30vw,180px)_minmax(0,1fr)]'}`}>
+		<div className={`h-full grid ${leftMenuHiden ? 'grid-cols-[36px_1fr]' : 'grid-cols-[minmax(theme(spacing.36),auto)_1fr]'}`}>
 			<LeftMenu active={activeTab} setActiveTab={setActiveTab} leftMenuHiden={leftMenuHiden} setLeftMenuHidden={setLeftMenuHidden}/>
 			<div className="overflow-auto">
 				{tabs.find(tab=>tab.name === activeTab)?.content}
 			</div>
 		</div>
 	)
+}
+
+async function getPopularLanguages(username) {
+	const res = await fetch(
+		`https://api.github.com/users/${username}/repos?per_page=100`
+	)
+	if (res.ok){
+		const repos = await res.json()
+		const counts = {}
+		for (const repo of repos) {
+			if (!repo.language) continue
+			counts[repo.language] = (counts[repo.language] || 0) + 1
+		}
+		return Object.entries(counts)
+			.sort((a, b) => b[1] - a[1])
+			.map(([language, count]) => ({
+				language,
+				count
+			}))
+	}
 }
