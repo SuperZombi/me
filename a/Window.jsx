@@ -4,7 +4,9 @@ const Window = ({name, icon, minimized, setMinimized, close, children}) => {
 			<button className="
 				h-full ring-1 ring-[#bcecff] rounded cursor-pointer overflow-hidden
 				active:translate-y-[1px]
-			" onClick={onClick}>
+			" onClick={onClick}
+				onMouseDown={e => e.stopPropagation()}
+			>
 				<img className="h-full" src={src} draggable={false}/>
 			</button>
 		)
@@ -114,13 +116,13 @@ const Window = ({name, icon, minimized, setMinimized, close, children}) => {
 					: {}
 			}
 		>
-			<div className="
+			<div className={`
 				bg-gradient-to-b from-[#096df5] to-[#0260f6]
 				border-b border-[#2359ab]
 				h-10 flex items-center justify-between
 				text-white select-none gap-5 px-2
-				cursor-move
-			"
+				${isFullscreen ? "" : "cursor-move"}
+			`}
 				onMouseDown={isFullscreen ? null : e => startDrag(e.clientX, e.clientY)}
 				onTouchStart={isFullscreen ? null : e => {
 					const touch = e.touches[0]

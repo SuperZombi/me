@@ -16,8 +16,7 @@ const App = () => {
 						: app
 				)
 			}
-			return [
-				...prev,
+			return [...prev,
 				{
 					id: crypto.randomUUID(),
 					name,
@@ -42,11 +41,20 @@ const App = () => {
 	const closeWindow = (win_id) => {
 		setApps(prev => prev.filter(app => app.id !== win_id))
 	}
+	const appsList = [
+		{
+			name: "Profile",
+			icon: "a/icons/user.png",
+			content: <Profile/>
+		}
+	]
+
 	return (
 		<div className="w-screen h-screen overflow-hidden" onClick={clickHandler}>
 			<img className="select-none w-full h-full object-cover" src="a/icons/wall.jpg" draggable={false}/>
 			{showStartMenu && (
-				<StartMenu runApp={runApp}
+				<StartMenu
+					runApp={runApp} appsList={appsList}
 					setShowStartMenu={setShowStartMenu}
 				/>
 			)}

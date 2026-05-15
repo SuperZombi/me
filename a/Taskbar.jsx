@@ -76,7 +76,7 @@ const TaskBar = ({apps, setMinimized, setShowStartMenu}) => {
 	)
 }
 
-const StartMenu = ({runApp, setShowStartMenu}) => {
+const StartMenu = ({runApp, appsList, setShowStartMenu}) => {
 	const MenuItem = ({ onClick, children }) => (
 		<button
 			className="
@@ -120,12 +120,12 @@ const StartMenu = ({runApp, setShowStartMenu}) => {
 
 			<div className="flex bg-white grid grid-cols-2">
 				<div className="py-2">
-					<MenuItem onClick={_=>
-						startApp("Profile", "a/icons/user.png", <Profile/>)
-					}>
-						<img className="h-full py-2" src="a/icons/user.png" draggable={false}/>
-						<span>Profile</span>
-					</MenuItem>
+					{appsList.map(app=>(
+						<MenuItem key={app.name} onClick={_=>startApp(app.name, app.icon, app.content)}>
+							<img className="h-full py-2" src={app.icon} draggable={false}/>
+							<span>{app.name}</span>
+						</MenuItem>
+					))}
 					<MenuItem>
 						<span>🌐</span>
 						<span>Internet Explorer</span>
