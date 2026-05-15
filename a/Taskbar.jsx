@@ -76,7 +76,7 @@ const TaskBar = ({apps, setMinimized, setShowStartMenu}) => {
 	)
 }
 
-const StartMenu = ({runApp, appsList, setShowStartMenu}) => {
+const StartMenu = ({runApp, appsList, setShowStartMenu, onShutDown}) => {
 	const MenuItem = ({ onClick, children }) => (
 		<button
 			className="
@@ -169,6 +169,7 @@ const StartMenu = ({runApp, appsList, setShowStartMenu}) => {
 						hover:shadow-[inset_1px_1px_0_rgba(255,255,255,0.3)]
 						active:translate-y-[1px]
 					"
+					onClick={_=>onShutDown()}
 				>
 					<img className="select-none h-full ring-1 ring-[#c0cbe3] rounded-md" src="a/icons/turn-off.png" draggable={false}/>
 					<span>Turn Off</span>

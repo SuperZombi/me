@@ -1,4 +1,4 @@
-const Profile = ({userLanguages}) => {
+const Profile = ({getPopularLanguages}) => {
 	const [activeTab, setActiveTab] = React.useState('general')
 	const [leftMenuHiden, setLeftMenuHidden] = React.useState(false)
 	const MenuItem = ({icon, name, active, onClick}) => {
@@ -60,6 +60,10 @@ const Profile = ({userLanguages}) => {
 			</React.Fragment>
 		)
 	}
+	const [userLanguages, setUserLanguages] = React.useState(null)
+	React.useEffect(() => {
+		getPopularLanguages('SuperZombi').then(setUserLanguages)
+	}, [])
 	const total = userLanguages?.reduce((sum, lang) => sum + lang.count, 0) || 0
 	const tabs = [
 		{name: 'general', content: (

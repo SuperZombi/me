@@ -1,24 +1,14 @@
 const App = () => {
+	const [showShutDown, setShowShutDown] = React.useState(false)
+	const [welcomeAudioPlayed, setWelcomeAudioPlayed] = React.useState(false)
 	const [showStartMenu, setShowStartMenu] = React.useState(false)
+	const [showWall, setShowWall] = React.useState(false)
 	const clickHandler = e => {
 		if (!(e.target.closest('.start-menu') || e.target.closest('.start-button'))){
 			setShowStartMenu(false)
 		}
+		if (!welcomeAudioPlayed){playSound()}
 	}
-	const [userLanguages, setUserLanguages] = React.useState(null)
-	React.useEffect(() => {
-		getPopularLanguages('SuperZombi').then(setUserLanguages)
-	}, [])
-	const ProfileComp = () => <Profile userLanguages={userLanguages} />
-	React.useEffect(() => {
-		setApps(prev =>
-			prev.map(app =>
-				app.name === 'Profile'
-					? { ...app, content: <ProfileComp/> }
-					: app
-			)
-		)
-	}, [userLanguages])
 	const [apps, setApps] = React.useState([])
 	const runApp = (name, icon, content) => {
 		setApps(prev => {
@@ -59,21 +49,40 @@ const App = () => {
 		{
 			name: "Profile",
 			icon: "a/icons/user.png",
-			content: <ProfileComp/>
+			content: <Profile getPopularLanguages={getPopularLanguages}/>
 		}
 	]
+	const playSound = () => {
+		const audio = new Audio("a/icons/startup.mp3")
+		audio.play().then(_=>{
+			setWelcomeAudioPlayed(true)
+		})
+		.catch(err => {
+			console.log("Blocked autoplay:", err)
+		})
+	}
 	React.useEffect(() => {
-		const app = appsList[0]
-		runApp(app.name, app.icon, app.content)
+		setTimeout(() => {
+			playSound()
+			setShowWall(true)
+		}, 0)
+		setTimeout(() => {
+			const app = appsList[0]
+			runApp(app.name, app.icon, app.content)
+		}, 1000)
 	}, [])
+	const onShutDown = _=>{console.log("here");setShowShutDown(true)}
 
 	return (
-		<div className="w-dvw h-dvh overflow-hidden" onClick={clickHandler}>
-			<img className="select-none w-full h-full object-cover" src="a/icons/wall.jpg" draggable={false}/>
+		<div className="w-dvw h-dvh overflow-hidden bg-black" onClick={clickHandler}>
+			<img className={`select-none w-full h-full object-cover ${showWall ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}
+				src="a/icons/wall.jpg" draggable={false}
+			/>
 			{showStartMenu && (
 				<StartMenu
 					runApp={runApp} appsList={appsList}
 					setShowStartMenu={setShowStartMenu}
+					onShutDown={onShutDown}
 				/>
 			)}
 			<TaskBar
@@ -90,12 +99,19 @@ const App = () => {
 					{app.content}
 				</Window>
 			))}
+			{showShutDown && (
+				<video className="w-dvw h-dvh inset-0 fixed z-50 object-cover" src="a/icons/shutdown.mp4" autoPlay></video>
+			)}
 		</div>
 	)
 }
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>)
 
+const cachedUserLanguages = {}
 async function getPopularLanguages(username) {
+	if (cachedUserLanguages[username]) {
+		return cachedUserLanguages[username]
+	}
 	const res = await fetch(
 		`https://api.github.com/users/${username}/repos?per_page=100`
 	)
@@ -106,11 +122,13 @@ async function getPopularLanguages(username) {
 			if (!repo.language) continue
 			counts[repo.language] = (counts[repo.language] || 0) + 1
 		}
-		return Object.entries(counts)
+		const result = Object.entries(counts)
 			.sort((a, b) => b[1] - a[1])
 			.map(([language, count]) => ({
 				language,
 				count
 			}))
+		cachedUserLanguages[username] = result
+		return result
 	}
 }
