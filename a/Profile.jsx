@@ -1,4 +1,4 @@
-const Profile = () => {
+const Profile = ({userLanguages}) => {
 	const [activeTab, setActiveTab] = React.useState('general')
 	const [leftMenuHiden, setLeftMenuHidden] = React.useState(false)
 	const MenuItem = ({icon, name, active, onClick}) => {
@@ -60,11 +60,7 @@ const Profile = () => {
 			</React.Fragment>
 		)
 	}
-	const [userLanguages, setUserLanguages] = React.useState(null)
 	const total = userLanguages?.reduce((sum, lang) => sum + lang.count, 0) || 0
-	React.useEffect(() => {
-		getPopularLanguages('SuperZombi').then(setUserLanguages)
-	}, [])
 	const tabs = [
 		{name: 'general', content: (
 			<div className="min-w-max">
@@ -144,24 +140,4 @@ const Profile = () => {
 			</div>
 		</div>
 	)
-}
-
-async function getPopularLanguages(username) {
-	const res = await fetch(
-		`https://api.github.com/users/${username}/repos?per_page=100`
-	)
-	if (res.ok){
-		const repos = await res.json()
-		const counts = {}
-		for (const repo of repos) {
-			if (!repo.language) continue
-			counts[repo.language] = (counts[repo.language] || 0) + 1
-		}
-		return Object.entries(counts)
-			.sort((a, b) => b[1] - a[1])
-			.map(([language, count]) => ({
-				language,
-				count
-			}))
-	}
 }

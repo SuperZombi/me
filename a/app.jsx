@@ -5,6 +5,20 @@ const App = () => {
 			setShowStartMenu(false)
 		}
 	}
+	const [userLanguages, setUserLanguages] = React.useState(null)
+	React.useEffect(() => {
+		getPopularLanguages('SuperZombi').then(setUserLanguages)
+	}, [])
+	const ProfileComp = () => <Profile userLanguages={userLanguages} />
+	React.useEffect(() => {
+		setApps(prev =>
+			prev.map(app =>
+				app.name === 'Profile'
+					? { ...app, content: <ProfileComp/> }
+					: app
+			)
+		)
+	}, [userLanguages])
 	const [apps, setApps] = React.useState([])
 	const runApp = (name, icon, content) => {
 		setApps(prev => {
@@ -45,7 +59,7 @@ const App = () => {
 		{
 			name: "Profile",
 			icon: "a/icons/user.png",
-			content: <Profile/>
+			content: <ProfileComp/>
 		}
 	]
 	React.useEffect(() => {
@@ -80,3 +94,23 @@ const App = () => {
 	)
 }
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>)
+
+async function getPopularLanguages(username) {
+	const res = await fetch(
+		`https://api.github.com/users/${username}/repos?per_page=100`
+	)
+	if (res.ok){
+		const repos = await res.json()
+		const counts = {}
+		for (const repo of repos) {
+			if (!repo.language) continue
+			counts[repo.language] = (counts[repo.language] || 0) + 1
+		}
+		return Object.entries(counts)
+			.sort((a, b) => b[1] - a[1])
+			.map(([language, count]) => ({
+				language,
+				count
+			}))
+	}
+}
