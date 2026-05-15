@@ -48,6 +48,10 @@ const App = () => {
 			content: <Profile/>
 		}
 	]
+	React.useEffect(() => {
+		const app = appsList[0]
+		runApp(app.name, app.icon, app.content)
+	}, [])
 
 	return (
 		<div className="w-dvw h-dvh overflow-hidden" onClick={clickHandler}>

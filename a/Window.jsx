@@ -101,7 +101,7 @@ const Window = ({name, icon, minimized, setMinimized, close, children}) => {
 			${isFullscreen
 				? "w-dvw h-[calc(100dvh-theme(spacing.10))] z-40"
 				: `rounded-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-					max-sm:w-[calc(100dvw-theme(spacing.2))]
+					max-sm:w-[calc(100dvw-theme(spacing.1))]
 				`
 			}
 		`}
@@ -139,7 +139,7 @@ const Window = ({name, icon, minimized, setMinimized, close, children}) => {
 					<WindowButton src="a/icons/close.png" onClick={close}/>
 				</div>
 			</div>
-			<div className="bg-white p-1 h-full">
+			<div className="bg-white h-full text-gray-200">
 				{children}
 			</div>
 		</div>
