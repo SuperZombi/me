@@ -31,7 +31,7 @@ const TaskBar = ({apps, setMinimized, setShowStartMenu}) => {
 				"
 				onClick={_=>setShowStartMenu(prev=>!prev)}
 			>
-				<img src="a/icons/logo.png" className="select-none h-full" draggable={false}/>
+				<img src="a/assets/logo.png" className="select-none h-full" draggable={false}/>
 				Start
 			</button>
 
@@ -69,7 +69,7 @@ const TaskBar = ({apps, setMinimized, setShowStartMenu}) => {
 					text-white text-sm
 				"
 			>
-				<img src="a/icons/sound.png" className="select-none h-full pt-3 pb-2" draggable={false}/>
+				<img src="a/assets/sound.png" className="select-none h-full pt-3 pb-2" draggable={false}/>
 				<span>{time}</span>
 			</div>
 		</div>
@@ -171,7 +171,7 @@ const StartMenu = ({runApp, appsList, setShowStartMenu, onShutDown}) => {
 					"
 					onClick={_=>onShutDown()}
 				>
-					<img className="select-none h-full ring-1 ring-[#c0cbe3] rounded-md" src="a/icons/turn-off.png" draggable={false}/>
+					<img className="select-none h-full ring-1 ring-[#c0cbe3] rounded-md" src="a/assets/turn-off.png" draggable={false}/>
 					<span>Turn Off</span>
 				</button>
 			</div>

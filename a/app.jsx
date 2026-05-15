@@ -48,12 +48,12 @@ const App = () => {
 	const appsList = [
 		{
 			name: "Profile",
-			icon: "a/icons/user.png",
+			icon: "a/assets/user.png",
 			content: <Profile getPopularLanguages={getPopularLanguages}/>
 		}
 	]
 	const playSound = () => {
-		const audio = new Audio("a/icons/startup.mp3")
+		const audio = new Audio("a/assets/startup.mp3")
 		audio.play().then(_=>{
 			setWelcomeAudioPlayed(true)
 		})
@@ -76,7 +76,7 @@ const App = () => {
 	return (
 		<div className="w-dvw h-dvh overflow-hidden bg-black" onClick={clickHandler}>
 			<img className={`select-none w-full h-full object-cover ${showWall ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}
-				src="a/icons/wall.jpg" draggable={false}
+				src="a/assets/wall.jpg" draggable={false}
 			/>
 			{showStartMenu && (
 				<StartMenu
@@ -100,7 +100,7 @@ const App = () => {
 				</Window>
 			))}
 			{showShutDown && (
-				<video className="w-dvw h-dvh inset-0 fixed z-50 object-cover" src="a/icons/shutdown.mp4" autoPlay></video>
+				<video className="w-dvw h-dvh inset-0 fixed z-50 object-cover" src="a/assets/shutdown.mp4" autoPlay></video>
 			)}
 		</div>
 	)
