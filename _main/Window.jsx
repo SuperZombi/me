@@ -98,7 +98,9 @@ const Window = ({name, icon, minimized, setMinimized, close, children}) => {
 			overflow-hidden
 			${isFullscreen
 				? "w-screen h-[calc(100vh-theme(spacing.10))] z-40"
-				: "rounded-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-sm:w-full"
+				: `rounded-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+					max-sm:w-[calc(100vw-theme(spacing.2))]
+				`
 			}
 		`}
 			ref={windowRef}
