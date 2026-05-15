@@ -67,7 +67,7 @@ const Profile = () => {
 	}, [])
 	const tabs = [
 		{name: 'general', content: (
-			<div className="w-max">
+			<div className="min-w-max">
 				<div className="bg-[#c3daf2] p-3 flex items-center gap-3 border-b border-[#a9c0e0] whitespace-nowrap">
 					<img className="h-12 ring-2 ring-[#7090c0] rounded-sm select-none" src="https://avatars.githubusercontent.com/u/75096786" draggable={false} />
 					<div className="flex flex-col">
