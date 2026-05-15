@@ -31,7 +31,7 @@ const TaskBar = ({apps, setMinimized, setShowStartMenu}) => {
 				"
 				onClick={_=>setShowStartMenu(prev=>!prev)}
 			>
-				<img src="_main/icons/logo.png" className="select-none h-full" draggable={false}/>
+				<img src="a/icons/logo.png" className="select-none h-full" draggable={false}/>
 				Start
 			</button>
 
@@ -69,7 +69,7 @@ const TaskBar = ({apps, setMinimized, setShowStartMenu}) => {
 					text-white text-sm
 				"
 			>
-				<img src="_main/icons/sound.png" className="select-none h-full pt-3 pb-2" draggable={false}/>
+				<img src="a/icons/sound.png" className="select-none h-full pt-3 pb-2" draggable={false}/>
 				<span>{time}</span>
 			</div>
 		</div>
@@ -121,9 +121,9 @@ const StartMenu = ({runApp, setShowStartMenu}) => {
 			<div className="flex bg-white grid grid-cols-2">
 				<div className="py-2">
 					<MenuItem onClick={_=>
-						startApp("Profile", "_main/icons/user.png", <Profile/>)
+						startApp("Profile", "a/icons/user.png", <Profile/>)
 					}>
-						<img className="h-full py-2" src="_main/icons/user.png" draggable={false}/>
+						<img className="h-full py-2" src="a/icons/user.png" draggable={false}/>
 						<span>Profile</span>
 					</MenuItem>
 					<MenuItem>
@@ -170,7 +170,7 @@ const StartMenu = ({runApp, setShowStartMenu}) => {
 						active:translate-y-[1px]
 					"
 				>
-					<img className="select-none h-full ring-1 ring-[#c0cbe3] rounded-md" src="_main/icons/turn-off.png" draggable={false}/>
+					<img className="select-none h-full ring-1 ring-[#c0cbe3] rounded-md" src="a/icons/turn-off.png" draggable={false}/>
 					<span>Turn Off</span>
 				</button>
 			</div>

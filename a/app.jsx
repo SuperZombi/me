@@ -44,7 +44,7 @@ const App = () => {
 	}
 	return (
 		<div className="w-screen h-screen overflow-hidden" onClick={clickHandler}>
-			<img className="select-none w-full h-full object-cover" src="_main/icons/wall.jpg" draggable={false}/>
+			<img className="select-none w-full h-full object-cover" src="a/icons/wall.jpg" draggable={false}/>
 			{showStartMenu && (
 				<StartMenu runApp={runApp}
 					setShowStartMenu={setShowStartMenu}

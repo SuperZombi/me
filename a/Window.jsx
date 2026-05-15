@@ -132,9 +132,9 @@ const Window = ({name, icon, minimized, setMinimized, close, children}) => {
 					<span>{name}</span>
 				</div>
 				<div className="h-full py-2 flex gap-1">
-					<WindowButton src="_main/icons/hide.png" onClick={_=>setMinimized(true)}/>
-					<WindowButton src="_main/icons/fullscreen.png" onClick={toggleFullscreen}/>
-					<WindowButton src="_main/icons/close.png" onClick={close}/>
+					<WindowButton src="a/icons/hide.png" onClick={_=>setMinimized(true)}/>
+					<WindowButton src="a/icons/fullscreen.png" onClick={toggleFullscreen}/>
+					<WindowButton src="a/icons/close.png" onClick={close}/>
 				</div>
 			</div>
 			<div className="bg-white p-1 h-full">
