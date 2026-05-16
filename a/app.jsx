@@ -10,7 +10,7 @@ const App = () => {
 		if (!welcomeAudioPlayed){playSound()}
 	}
 	const [apps, setApps] = React.useState([])
-	const runApp = (name, icon, content) => {
+	const runApp = (name, icon, content, is_error=false) => {
 		setApps(prev => {
 			const exists = prev.find(app => app.name === name)
 			if (exists) {
@@ -26,7 +26,8 @@ const App = () => {
 					name,
 					icon,
 					minimized: false,
-					content
+					content,
+					is_error
 				}
 			]
 		})
@@ -56,6 +57,14 @@ const App = () => {
 		const audio = new Audio("a/assets/startup.mp3")
 		audio.play().then(_=>{
 			setWelcomeAudioPlayed(true)
+			setTimeout(() => {
+				const err_audio = new Audio("a/assets/error.mp3")
+				err_audio.play()
+				const app_name = "Local Disk (C:)"
+				runApp(app_name, "a/assets/error.png", <NoDiskSpaceError onClose={_=>
+					setApps(prev => prev.filter(app => app.name !== app_name)
+				)}/>, true)
+			}, 5000)
 		})
 		.catch(err => {
 			console.log("Blocked autoplay:", err)
@@ -95,6 +104,7 @@ const App = () => {
 					minimized={app.minimized}
 					setMinimized={setMinimized(app.id)}
 					close={_=>closeWindow(app.id)}
+					is_error={app.is_error}
 				>
 					{app.content}
 				</Window>
@@ -106,6 +116,23 @@ const App = () => {
 	)
 }
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>)
+
+const NoDiskSpaceError = ({onClose}) => {
+	return (
+		<div className="flex flex-col items-center p-3 gap-3">
+			<div className="flex gap-3 items-center">
+				<img className="select-none h-6" src="a/assets/error.png" draggable={false}/>
+				<div className="flex flex-col">
+					<span>No more disk space.</span>
+					<span>Delete Windows?</span>
+				</div>
+			</div>
+			<button className="bg-gray-100 border border-gray-600 px-2 active:translate-y-[1px]"
+				onClick={onClose}
+			>Yes</button>
+		</div>
+	)
+}
 
 const cachedUserLanguages = {}
 async function getPopularLanguages(username) {

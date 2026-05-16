@@ -1,4 +1,4 @@
-const Window = ({name, icon, minimized, setMinimized, close, children}) => {
+const Window = ({name, icon, minimized, setMinimized, close, children, is_error}) => {
 	const WindowButton = ({src, onClick}) => {
 		return (
 			<button className="
@@ -100,8 +100,8 @@ const Window = ({name, icon, minimized, setMinimized, close, children}) => {
 			overflow-hidden
 			${isFullscreen
 				? "w-dvw h-[calc(100dvh-theme(spacing.10))] z-40"
-				: `rounded-md top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-					max-sm:w-[calc(100dvw-theme(spacing.1))]
+				: `rounded-md max-sm:w-[calc(100dvw-theme(spacing.1))]
+				   top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
 				`
 			}
 		`}
@@ -130,16 +130,20 @@ const Window = ({name, icon, minimized, setMinimized, close, children}) => {
 				}}
 			>
 				<div className="h-full flex items-center gap-1">
-					<img className="h-full py-2" src={icon} draggable={false}/>
+					{(icon && !is_error) && <img className="h-full py-2" src={icon} draggable={false}/>}
 					<span>{name}</span>
 				</div>
 				<div className="h-full py-2 flex gap-1">
-					<WindowButton src="a/assets/hide.png" onClick={_=>setMinimized(true)}/>
-					<WindowButton src="a/assets/fullscreen.png" onClick={toggleFullscreen}/>
+					{!is_error && (
+						<React.Fragment>
+							<WindowButton src="a/assets/hide.png" onClick={_=>setMinimized(true)}/>
+							<WindowButton src="a/assets/fullscreen.png" onClick={toggleFullscreen}/>
+						</React.Fragment>
+					)}
 					<WindowButton src="a/assets/close.png" onClick={close}/>
 				</div>
 			</div>
-			<div className="bg-white h-full text-gray-200">
+			<div className="bg-white h-full text-gray-800">
 				{children}
 			</div>
 		</div>

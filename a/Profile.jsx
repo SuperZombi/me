@@ -13,7 +13,7 @@ const Profile = ({getPopularLanguages}) => {
 	)}
 	const LeftMenu = ({active, leftMenuHiden, setLeftMenuHidden, setActiveTab}) => {
 		return (
-			<div className="bg-[#6e88dd] h-full select-none">
+			<div className="bg-[#6e88dd] text-gray-200 h-full select-none">
 				<div className={`flex items-center gap-2 cursor-pointer pt-1
 					${leftMenuHiden ? 'justify-center' : 'pl-3'}
 				`} onClick={_=>setLeftMenuHidden(prev=>!prev)}>
