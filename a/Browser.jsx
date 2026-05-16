@@ -20,7 +20,7 @@ const Browser = ({}) => {
             </div>
         )
     }
-    const LeftMenu = () => {
+    const LeftMenu = ({leftMenuHiden, setLeftMenuHidden}) => {
         const SearchItem = ({text}) => {
             return (
                 <div className="flex gap-2 items-center px-2 py-1 hover:bg-blue-50 cursor-pointer">
@@ -30,30 +30,46 @@ const Browser = ({}) => {
             )
         }
         const SearchItems = [
-            "React development",
-            "JavaScript tutorials"
+            "how to kill child without killing parent",
+            "how to kill child process",
+            "how to center div css",
+            "how to exit vim",
+            "undefined is not a function",
+            "how to undo rm -rf /",
+            "regex to parse html",
+            "difference between undefined, null, NaN",
         ]
         return (
             <div className="border-r border-gray-300">
-                <div className="bg-[#6e88dd] text-gray-100 flex gap-2 items-center px-3 py-1">
-                    <i className="fa-solid fa-clock-rotate-left text-xs leading-none"></i>
-                    <span className="text-sm font-bold">Search History</span>
+                <div className="bg-[#6e88dd] text-gray-100 flex gap-2 items-center px-2 py-1 cursor-pointer hover:bg-[#6495d4]"
+                    onClick={_=>setLeftMenuHidden(prev=>!prev)}
+                >
+                    <i className={`fa-solid fa-clock-rotate-left leading-none
+                        ${leftMenuHiden ? "text-sm py-0.5" : "text-xs"}`}></i>
+                    {!leftMenuHiden && <span className="text-sm font-bold">Search History</span>}
                 </div>
-                <div className="divide-y">
-                    {SearchItems.map((text, index) => (
-                        <SearchItem key={index} text={text} />
-                    ))}
-                </div>
+                {!leftMenuHiden && (
+                    <div className="divide-y">
+                        {SearchItems.map((text, index) => (
+                            <SearchItem key={index} text={text} />
+                        ))}
+                    </div>
+                )}
             </div>
         )
     }
+    const [leftMenuHiden, setLeftMenuHidden] = React.useState(false)
     return (
         <div className="h-full">
             <Header/>
-            <div className="h-full grid grid-cols-[minmax(theme(spacing.40),auto)_1fr]">
-                <LeftMenu/>
-                <div className="overflow-auto">
-                    <h3>Hello world</h3>
+            <div className={`h-full grid ${leftMenuHiden ? 'grid-cols-[auto_1fr]' : 'grid-cols-[minmax(theme(spacing.40),auto)_1fr]'}`}>
+                <LeftMenu leftMenuHiden={leftMenuHiden} setLeftMenuHidden={setLeftMenuHidden}/>
+                <div className="flex justify-center">
+                    <div className="flex flex-col items-start gap-3 p-3 pt-10">
+                        <img className="h-12 select-none" src="a/assets/sadpaper.png" draggable={false} />
+                        <span>Webpage not available</span>
+                        <span>ERR_CONNECTION_REFUSED</span>
+                    </div>
                 </div>
             </div>
         </div>
