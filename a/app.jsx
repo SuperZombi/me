@@ -16,7 +16,7 @@ const App = () => {
 			if (exists) {
 				return prev.map(app =>
 					app.name === name
-						? { ...app, minimized: false }
+						? { ...app, minimized: false, zIndex: 40 }
 						: app
 				)
 			}
@@ -27,7 +27,8 @@ const App = () => {
 					icon,
 					minimized: false,
 					content,
-					is_error
+					is_error,
+					zIndex: 40
 				}
 			]
 		})
@@ -37,8 +38,9 @@ const App = () => {
 			setApps(prev =>
 				prev.map(app =>
 					app.id === win_id
-						? { ...app, minimized: typeof value === 'function' ? value(app.minimized) : value }
-						: app
+						? { ...app, minimized: typeof value === 'function' ? value(app.minimized) : value,
+							zIndex: value ? 40 : 20
+						} : {...app, zIndex: 20}
 				)
 			)
 		}
@@ -82,6 +84,9 @@ const App = () => {
 		}, 0)
 	}, [])
 	const onShutDown = _=>{setShowShutDown(true)}
+	const FocusApp = (app_id) => {
+		setApps(prev => prev.map(a => a.id === app_id ? {...a, zIndex: 40} : {...a, zIndex: 20}))
+	}
 
 	return (
 		<div className="w-dvw h-dvh overflow-hidden bg-black" onClick={clickHandler}>
@@ -106,6 +111,8 @@ const App = () => {
 					setMinimized={setMinimized(app.id)}
 					close={_=>closeWindow(app.id)}
 					is_error={app.is_error}
+					zIndex={app.zIndex}
+					onFocus={_=>FocusApp(app.id)}
 				>
 					{app.content}
 				</Window>

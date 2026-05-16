@@ -1,4 +1,4 @@
-const Window = ({name, icon, minimized, setMinimized, close, children, is_error}) => {
+const Window = ({name, icon, minimized, setMinimized, close, children, is_error, zIndex, onFocus}) => {
 	const WindowButton = ({src, onClick}) => {
 		return (
 			<button className="
@@ -95,17 +95,20 @@ const Window = ({name, icon, minimized, setMinimized, close, children, is_error}
 	if (minimized) return
 
 	return (
-		<div className={`absolute
+		<div className={`
+			window absolute
 			border-2 border-[#2359ab]
 			overflow-hidden
 			${isFullscreen
 				? "w-dvw h-[calc(100dvh-theme(spacing.10))] z-30"
 				: `rounded-md
 				   top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-				   ${is_error ? "z-50" : "max-sm:w-[calc(100dvw-theme(spacing.1))]"}
+				   ${is_error ? "z-50" : `z-${zIndex} max-sm:w-[calc(100dvw-theme(spacing.1))]`}
 				`
 			}
 		`}
+			onMouseDown={onFocus}
+			onTouchStart={onFocus}
 			ref={windowRef}
 			style={
 				position

@@ -108,7 +108,7 @@ const StartMenu = ({runApp, appsList, setShowStartMenu, onShutDown}) => {
 			bottom-10
 			left-px
 			max-sm:right-px
-			z-40
+			z-50
 		">
 			<div className="
 				bg-gradient-to-b from-[#1767d0] to-[#4992eb]
