@@ -58,6 +58,11 @@ const App = () => {
 			name: "Internet Explorer",
 			icon: "a/assets/browser.png",
 			content: <Browser/>
+		},
+		{
+			name: "Games",
+			icon: "a/assets/game.png",
+			content: <Games/>
 		}
 	]
 	const playSound = () => {
@@ -92,6 +97,9 @@ const App = () => {
 		<div className="w-dvw h-dvh overflow-hidden bg-black" onClick={clickHandler}>
 			<img className={`select-none w-full h-full object-cover ${showWall ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}
 				src="a/assets/wall.jpg" draggable={false}
+			/>
+			<img className={`select-none absolute bottom-14 right-4 h-10 w-10 ${showWall ? 'opacity-100' : 'opacity-0'} delay-1000`}
+				src="a/assets/trash.png" draggable={false}
 			/>
 			{showStartMenu && (
 				<StartMenu

@@ -60,6 +60,21 @@ const Profile = ({getPopularLanguages}) => {
 			</React.Fragment>
 		)
 	}
+	const Tag = ({children}) => {
+		return (
+			<div className="bg-[#c3daf2] border border-[#a9c0e0] text-xs px-1 w-fit rounded-sm">
+				{children}
+			</div>
+		)
+	}
+	const Link = ({icon, name, url}) => {
+		return (
+			<a href={url} className="flex items-center gap-1">
+				<i className={`${icon} w-5 flex items-center justify-center leading-none`}></i>
+				<span className="hover:underline">{name}</span>
+			</a>
+		)
+	}
 	const [userLanguages, setUserLanguages] = React.useState(null)
 	React.useEffect(() => {
 		getPopularLanguages('SuperZombi').then(setUserLanguages)
@@ -81,10 +96,19 @@ const Profile = ({getPopularLanguages}) => {
 				</div>
 				<div className="p-3 flex flex-col gap-3">
 					<Section icon={"fa-circle-info"} title="General Information">
-						<div className="text-xs grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-1 w-full">
+						<div className="text-xs grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-1.5 w-full">
 							<Row label="Pronouns:" value="he/him" />
 							<Row label="Description:" value="React Frontend Web Developer" />
 							<Row label="IP address:" value="192.168.1.101" className="font-mono" />
+							<Row label="Tags:" value={(
+								<React.Fragment>
+									<Tag>dev</Tag>
+									<Tag>anime</Tag>
+									<Tag>git</Tag>
+									<Tag>react</Tag>
+									<Tag>python</Tag>
+								</React.Fragment>
+							)} className="flex gap-1"/>
 						</div>
 					</Section>
 					{userLanguages && (
@@ -130,9 +154,17 @@ const Profile = ({getPopularLanguages}) => {
 			</div>
 		)},
 		{name: 'contacts', content: (
-			<div>
-				<h2>Contacts</h2>
-				<p>This is the contacts section.</p>
+			<div className="min-w-max">
+				<div className="p-3 flex flex-col gap-3">
+					<Section icon={"fa-link"} title="Connected Accounts">
+						<div className="text-xs flex flex-col gap-y-1.5 w-full">
+							<Link icon="fa-brands fa-github" name="github" url="https://github.com/SuperZombi"/>
+							<Link icon="fa-brands fa-youtube" name="youtube" url="https://www.youtube.com/@SuperZombi"/>
+							<Link icon="fa-brands fa-telegram" name="telegram" url="https://t.me/SuperZombi"/>
+							<Link icon="fa-solid fa-envelope" name="email" url="mailto:super.zombi.yt@gmail.com"/>
+						</div>
+					</Section>
+				</div>
 			</div>
 		)}
 	]

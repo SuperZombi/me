@@ -126,14 +126,6 @@ const StartMenu = ({runApp, appsList, setShowStartMenu, onShutDown}) => {
 							<span>{app.name}</span>
 						</MenuItem>
 					))}
-					<MenuItem>
-						<span>🌐</span>
-						<span>Internet Explorer</span>
-					</MenuItem>
-					<MenuItem>
-						<span>📧</span>
-						<span>Outlook Express</span>
-					</MenuItem>
 					<div className="my-2 border-t border-[#e5e5e5]" />
 					<MenuItem>
 						<span>🌐</span>
