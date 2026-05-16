@@ -80,7 +80,7 @@ const App = () => {
 			runApp(app.name, app.icon, app.content)
 		}, 1000)
 	}, [])
-	const onShutDown = _=>{console.log("here");setShowShutDown(true)}
+	const onShutDown = _=>{setShowShutDown(true)}
 
 	return (
 		<div className="w-dvw h-dvh overflow-hidden bg-black" onClick={clickHandler}>
