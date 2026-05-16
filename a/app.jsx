@@ -51,6 +51,11 @@ const App = () => {
 			name: "Profile",
 			icon: "a/assets/user.png",
 			content: <Profile getPopularLanguages={getPopularLanguages}/>
+		},
+		{
+			name: "Internet Explorer",
+			icon: "a/assets/browser.png",
+			content: <Browser/>
 		}
 	]
 	const playSound = () => {

@@ -7,7 +7,7 @@ const Profile = ({getPopularLanguages}) => {
 				flex items-center gap-2 ${active ? 'bg-[#3a5faa]' : 'hover:bg-[#5577bb]'}
 				${leftMenuHiden ? 'p-2 justify-center' : 'px-3 py-1'}
 			`} onClick={onClick}>
-				<i className={`fa-solid ${icon} text-xs w-4 flex justify-center items-center`}></i>
+				<i className={`fa-solid ${icon} text-xs w-4 leading-none`}></i>
 				{leftMenuHiden ? null : <span className="text-sm">{name}</span>}
 			</button>
 	)}
@@ -18,7 +18,7 @@ const Profile = ({getPopularLanguages}) => {
 					${leftMenuHiden ? 'justify-center' : 'pl-3'}
 				`} onClick={_=>setLeftMenuHidden(prev=>!prev)}>
 					<i className={`
-						fa-solid fa-angles-left text-xs w-4 flex justify-center items-center
+						fa-solid fa-angles-left text-xs w-4 leading-none
 						${leftMenuHiden ? 'rotate-180' : ''}
 					`}
 					></i>
@@ -39,7 +39,7 @@ const Profile = ({getPopularLanguages}) => {
 		return (
 			<div className="ring-1 ring-[#a9c0e0] rounded-sm">
 				<div className="bg-[#c3daf2] text-gray-800 text-sm px-3 py-1 flex items-center gap-2 border-b border-[#a9c0e0]">
-					<i className={`fa-solid ${icon} text-sm flex items-center`}></i>
+					<i className={`fa-solid ${icon} text-sm leading-none`}></i>
 					<span className="font-bold">{title}</span>
 				</div>
 				<div className="p-2">
