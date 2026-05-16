@@ -75,10 +75,6 @@ const App = () => {
 			playSound()
 			setShowWall(true)
 		}, 0)
-		setTimeout(() => {
-			const app = appsList[0]
-			runApp(app.name, app.icon, app.content)
-		}, 1000)
 	}, [])
 	const onShutDown = _=>{setShowShutDown(true)}
 
@@ -120,7 +116,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(<App/>)
 const NoDiskSpaceError = ({onClose}) => {
 	return (
 		<div className="flex flex-col items-center p-3 gap-3">
-			<div className="flex gap-3 items-center">
+			<div className="flex gap-3 items-center w-max">
 				<img className="select-none h-6" src="a/assets/error.png" draggable={false}/>
 				<div className="flex flex-col">
 					<span>No more disk space.</span>
