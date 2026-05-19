@@ -77,17 +77,17 @@ const TaskBar = ({apps, setMinimized, setShowStartMenu}) => {
 }
 
 const StartMenu = ({runApp, appsList, setShowStartMenu, onShutDown}) => {
-	const MenuItem = ({ onClick, url, children }) => (
+	const MenuItem = ({ onClick, url, children, icon="l" }) => (
 		<button
-			className="
-				w-full h-9 px-3 pr-4
-				gap-2
+			className={`
+				w-full h-9 px-3
 				hover:bg-[#316ac5]
 				hover:text-white
 				text-left text-nowrap
 				items-center content-center
-				grid grid-cols-[theme(spacing.6)_1fr]
-			"
+				grid gap-2
+				${icon == "r" ? "grid-cols-[1fr_theme(spacing.6)]" : "grid-cols-[theme(spacing.6)_1fr]"}
+			`}
 			onClick={url ? _=>window.open(url, "_self") : onClick}
 		>
 			{children}
@@ -129,13 +129,9 @@ const StartMenu = ({runApp, appsList, setShowStartMenu, onShutDown}) => {
 						</MenuItem>
 					))}
 					<div className="my-2 border-t border-[#e5e5e5]" />
-					<MenuItem>
-						<span>🌐</span>
-						<span>Internet Explorer</span>
-					</MenuItem>
-					<MenuItem>
-						<span>📧</span>
-						<span>Outlook Express</span>
+					<MenuItem url="nav" icon="r">
+						<span>All Programs</span>
+						<i className="fa-solid fa-caret-right text-2xl text-[#5ac656] text-center"></i>
 					</MenuItem>
 				</div>
 				<div className="bg-[#d3e5fa] py-2 border-l border-[#b4d1f4]">
@@ -147,15 +143,11 @@ const StartMenu = ({runApp, appsList, setShowStartMenu, onShutDown}) => {
 						<i className="fa-brands fa-github text-xl text-center"></i>
 						<span>Repos</span>
 					</MenuItem>
+					<MenuItem url="https://superzombi.github.io/web-os/">
+						<img src="a/assets/win-11.png" draggable={false}/>
+						<span>Windows 12</span>
+					</MenuItem>
 					<div className="my-2 border-t border-[#b4d1f4]" />
-					<MenuItem>
-						<span>🌐</span>
-						<span>Internet Explorer</span>
-					</MenuItem>
-					<MenuItem>
-						<span>📧</span>
-						<span>Outlook Express</span>
-					</MenuItem>
 				</div>
 			</div>
 
