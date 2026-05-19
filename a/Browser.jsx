@@ -64,8 +64,8 @@ const Browser = ({}) => {
             <Header/>
             <div className={`h-full grid ${leftMenuHiden ? 'grid-cols-[auto_1fr]' : 'grid-cols-[minmax(theme(spacing.40),auto)_1fr]'}`}>
                 <LeftMenu leftMenuHiden={leftMenuHiden} setLeftMenuHidden={setLeftMenuHidden}/>
-                <div className="flex justify-center">
-                    <div className="flex flex-col items-start gap-3 p-3 pt-10">
+                <div className="flex items-center justify-center sm:min-w-96 sm:min-h-80 ">
+                    <div className="flex flex-col items-start gap-3 p-2">
                         <img className="h-12 select-none" src="a/assets/sadpaper.png" draggable={false} />
                         <span>Webpage not available</span>
                         <span>ERR_CONNECTION_REFUSED</span>
