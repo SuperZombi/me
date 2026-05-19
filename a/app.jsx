@@ -1,5 +1,6 @@
 const App = () => {
 	const [showShutDown, setShowShutDown] = React.useState(false)
+	const [showShutDownImg, setShowShutDownImg] = React.useState(true)
 	const [welcomeAudioPlayed, setWelcomeAudioPlayed] = React.useState(false)
 	const [showStartMenu, setShowStartMenu] = React.useState(false)
 	const [showWall, setShowWall] = React.useState(false)
@@ -88,45 +89,57 @@ const App = () => {
 			setShowWall(true)
 		}, 0)
 	}, [])
-	const onShutDown = _=>{setShowShutDown(true)}
+	const onShutDown = _=>{
+		setShowShutDown(true)
+		const audio = new Audio("a/assets/shutdown.mp3")
+		audio.play()
+		setTimeout(() => {
+			setShowShutDownImg(false)
+		}, 2500)
+	}
 	const FocusApp = (app_id) => {
 		setApps(prev => prev.map(a => a.id === app_id ? {...a, zIndex: 40} : {...a, zIndex: 20}))
 	}
 
 	return (
 		<div className="w-dvw h-dvh overflow-hidden bg-black" onClick={clickHandler}>
-			<img className={`select-none w-full h-full object-cover ${showWall ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}
-				src="a/assets/wall.jpg" draggable={false}
-			/>
-			<img className={`select-none absolute bottom-14 right-4 h-10 w-10 ${showWall ? 'opacity-100' : 'opacity-0'} delay-1000`}
-				src="a/assets/trash.png" draggable={false}
-			/>
-			{showStartMenu && (
-				<StartMenu
-					runApp={runApp} appsList={appsList}
-					setShowStartMenu={setShowStartMenu}
-					onShutDown={onShutDown}
+			{showShutDown ? (
+				<img className={`w-dvw h-dvh fixed inset-0 object-cover z-50 select-none ${showShutDownImg ? "opacity-100" : "opacity-0"} transition-opacity duration-500`}
+					src="a/assets/windows-xp-screen.jpg" draggable={false}
 				/>
-			)}
-			<TaskBar
-				apps={apps}
-				setShowStartMenu={setShowStartMenu}
-				setMinimized={setMinimized}
-			/>
-			{apps.map(app=>(
-				<Window key={app.id} name={app.name} icon={app.icon}
-					minimized={app.minimized}
-					setMinimized={setMinimized(app.id)}
-					close={_=>closeWindow(app.id)}
-					is_error={app.is_error}
-					zIndex={app.zIndex}
-					onFocus={_=>FocusApp(app.id)}
-				>
-					{app.content}
-				</Window>
-			))}
-			{showShutDown && (
-				<video className="w-dvw h-dvh inset-0 fixed z-50 object-cover" src="a/assets/shutdown.mp4" autoPlay></video>
+			) : (
+			<React.Fragment>
+				<img className={`select-none w-full h-full object-cover ${showWall ? 'opacity-100' : 'opacity-0'} transition-opacity duration-1000`}
+					src="a/assets/wall.jpg" draggable={false}
+				/>
+				<img className={`select-none absolute bottom-14 right-4 h-10 w-10 ${showWall ? 'opacity-100' : 'opacity-0'} delay-1000`}
+					src="a/assets/trash.png" draggable={false}
+				/>
+				{showStartMenu && (
+					<StartMenu
+						runApp={runApp} appsList={appsList}
+						setShowStartMenu={setShowStartMenu}
+						onShutDown={onShutDown}
+					/>
+				)}
+				<TaskBar
+					apps={apps}
+					setShowStartMenu={setShowStartMenu}
+					setMinimized={setMinimized}
+				/>
+				{apps.map(app=>(
+					<Window key={app.id} name={app.name} icon={app.icon}
+						minimized={app.minimized}
+						setMinimized={setMinimized(app.id)}
+						close={_=>closeWindow(app.id)}
+						is_error={app.is_error}
+						zIndex={app.zIndex}
+						onFocus={_=>FocusApp(app.id)}
+					>
+						{app.content}
+					</Window>
+				))}
+			</React.Fragment>
 			)}
 		</div>
 	)
