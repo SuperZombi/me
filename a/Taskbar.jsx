@@ -139,7 +139,7 @@ const StartMenu = ({runApp, appsList, setShowStartMenu, onShutDown}) => {
 						<img src="a/assets/player.png" draggable={false}/>
 						<span>Music</span>
 					</MenuItem>
-					<MenuItem url="http://127.0.0.1:8000/repos/">
+					<MenuItem url="repos">
 						<i className="fa-brands fa-github text-xl text-center"></i>
 						<span>Repos</span>
 					</MenuItem>
