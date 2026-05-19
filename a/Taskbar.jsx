@@ -77,16 +77,18 @@ const TaskBar = ({apps, setMinimized, setShowStartMenu}) => {
 }
 
 const StartMenu = ({runApp, appsList, setShowStartMenu, onShutDown}) => {
-	const MenuItem = ({ onClick, children }) => (
+	const MenuItem = ({ onClick, url, children }) => (
 		<button
 			className="
 				w-full h-9 px-3 pr-4
-				flex items-center gap-2
+				gap-2
 				hover:bg-[#316ac5]
 				hover:text-white
 				text-left text-nowrap
+				items-center content-center
+				grid grid-cols-[theme(spacing.6)_1fr]
 			"
-			onClick={onClick}
+			onClick={url ? _=>window.open(url, "_self") : onClick}
 		>
 			{children}
 		</button>
@@ -122,7 +124,7 @@ const StartMenu = ({runApp, appsList, setShowStartMenu, onShutDown}) => {
 				<div className="py-2">
 					{appsList.map(app=>(
 						<MenuItem key={app.name} onClick={_=>startApp(app.name, app.icon, app.content)}>
-							<img className="h-full py-2" src={app.icon} draggable={false}/>
+							<img src={app.icon} draggable={false}/>
 							<span>{app.name}</span>
 						</MenuItem>
 					))}
@@ -137,6 +139,15 @@ const StartMenu = ({runApp, appsList, setShowStartMenu, onShutDown}) => {
 					</MenuItem>
 				</div>
 				<div className="bg-[#d3e5fa] py-2 border-l border-[#b4d1f4]">
+					<MenuItem url="https://superzombi.github.io/music/">
+						<img src="a/assets/player.png" draggable={false}/>
+						<span>Music</span>
+					</MenuItem>
+					<MenuItem url="http://127.0.0.1:8000/repos/">
+						<i className="fa-brands fa-github text-xl text-center"></i>
+						<span>Repos</span>
+					</MenuItem>
+					<div className="my-2 border-t border-[#b4d1f4]" />
 					<MenuItem>
 						<span>🌐</span>
 						<span>Internet Explorer</span>
