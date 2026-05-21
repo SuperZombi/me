@@ -27,9 +27,8 @@ const Profile = ({getPopularLanguages}) => {
 						{leftMenuHiden ? null : <span className="text-xs">Control Panel</span>}
 					</div>
 					<div className="flex flex-col">
-						<MenuItem icon="fa-user" name="General" active={active === 'general'} onClick={() => setActiveTab('general')} />
+						<MenuItem icon="fa-user" name="Overview" active={active === 'general'} onClick={() => setActiveTab('general')} />
 						<MenuItem icon="fa-code" name="Projects" active={active === 'projects'} onClick={() => setActiveTab('projects')} />
-						<MenuItem icon="fa-at" name="Contacts" active={active === 'contacts'} onClick={() => setActiveTab('contacts')} />
 					</div>
 				</div>
 			</div>
@@ -151,6 +150,14 @@ const Profile = ({getPopularLanguages}) => {
 							, "flex gap-1"],
 						]}
 					/>
+					<Section icon={"fa-link"} title="Connected Accounts">
+						<div className="text-xs grid grid-cols-[repeat(auto-fill,minmax(theme(spacing.24),1fr))] gap-2 w-full">
+							<Link icon="fa-brands fa-github" name="github" url="https://github.com/SuperZombi"/>
+							<Link icon="fa-brands fa-youtube" name="youtube" url="https://www.youtube.com/@SuperZombi"/>
+							<Link icon="fa-brands fa-telegram" name="telegram" url="https://t.me/SuperZombi"/>
+							<Link icon="fa-solid fa-envelope" name="email" url="mailto:super.zombi.yt@gmail.com"/>
+						</div>
+					</Section>
 					<Section icon={"fa-language"}
 						title="Languages"
 						items={userLanguages?.map(item=>{
@@ -176,7 +183,7 @@ const Profile = ({getPopularLanguages}) => {
 			</div>
 		)},
 		{name: 'projects', content: (
-			<div className="p-3 flex flex-col gap-3">
+			<div className="p-3 flex flex-col gap-3 min-w-max">
 				{[
 				{
 					"name": "Browser Extensions",
@@ -236,7 +243,7 @@ const Profile = ({getPopularLanguages}) => {
 				},
 				].map((cat, index)=>(
 					<Section key={index} icon={cat.icon} title={cat.name}>
-						<div className="flex flex-col gap-2">
+						<div className="grid grid-cols-[repeat(auto-fill,minmax(theme(spacing.64),1fr))] gap-2">
 							{cat.items.map((item, i)=>(
 								<ProjectCard
 									key={i}
@@ -249,20 +256,6 @@ const Profile = ({getPopularLanguages}) => {
 						</div>
 					</Section>
 				))}
-			</div>
-		)},
-		{name: 'contacts', content: (
-			<div>
-				<div className="p-3 flex flex-col gap-3">
-					<Section icon={"fa-link"} title="Connected Accounts">
-						<div className="text-xs flex flex-col gap-y-1.5 w-full">
-							<Link icon="fa-brands fa-github" name="github" url="https://github.com/SuperZombi"/>
-							<Link icon="fa-brands fa-youtube" name="youtube" url="https://www.youtube.com/@SuperZombi"/>
-							<Link icon="fa-brands fa-telegram" name="telegram" url="https://t.me/SuperZombi"/>
-							<Link icon="fa-solid fa-envelope" name="email" url="mailto:super.zombi.yt@gmail.com"/>
-						</div>
-					</Section>
-				</div>
 			</div>
 		)}
 	]
