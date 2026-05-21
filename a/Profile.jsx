@@ -39,7 +39,7 @@ const Profile = ({getPopularLanguages}) => {
 		return (
 			<div className="ring-1 ring-[#a9c0e0] rounded-sm">
 				<div className="bg-[#c3daf2] text-gray-800 text-sm px-2 py-1 flex items-center gap-2 border-b border-[#a9c0e0]">
-					<i className={`fa-solid ${icon} text-sm`}></i>
+					<i className={`${icon.split(" ").length > 1 ? icon : `fa-solid ${icon}`} text-sm`}></i>
 					<span className="font-bold">{title}</span>
 				</div>
 				<div className={children ? "p-2" : "px-2 py-0.5"}>
@@ -207,6 +207,30 @@ const Profile = ({getPopularLanguages}) => {
 						[
 							"Discord Presence", "Customize your Discord Activity as you wish",
 							"https://github.com/SuperZombi/Discord-Presence", ["python", "react", "js"]
+						],
+					]
+				},
+				{
+					"name": "Python Libraries",
+					"icon": "fa-brands fa-python",
+					"items": [
+						[
+							"HdRezkaApi", "Unofficial API for HDrezka",
+							"https://github.com/SuperZombi/HdRezkaApi", ["python"]
+						],
+						[
+							"MyTube", "Unofficial API for YouTube",
+							"https://github.com/SuperZombi/MyTube", ["python"]
+						],
+					]
+				},
+				{
+					"name": "Games",
+					"icon": "fa-gamepad",
+					"items": [
+						[
+							"WoT Modpack", "Lightweight and modern modpack for World of Tanks",
+							"https://github.com/SuperZombi/wot-modpack", ["python", "react", "js", "css"]
 						],
 					]
 				},
