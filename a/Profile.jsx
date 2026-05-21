@@ -14,21 +14,23 @@ const Profile = ({getPopularLanguages}) => {
 	const LeftMenu = ({active, leftMenuHiden, setLeftMenuHidden, setActiveTab}) => {
 		return (
 			<div className="bg-[#6e88dd] text-gray-200 h-full select-none">
-				<div className={`flex items-center gap-2 cursor-pointer pt-1
-					${leftMenuHiden ? 'justify-center' : 'pl-3'}
-				`} onClick={_=>setLeftMenuHidden(prev=>!prev)}>
-					<i className={`
-						fa-solid fa-angles-left text-xs w-4 leading-none
-						${leftMenuHiden ? 'rotate-180' : ''}
-					`}
-					></i>
-					{leftMenuHiden ? null : <span className="text-xs">Control Panel</span>}
-				</div>
-				<div className="my-1 border-t border-[#5577bb]" />
-				<div className="flex flex-col">
-					<MenuItem icon="fa-user" name="General" active={active === 'general'} onClick={() => setActiveTab('general')} />
-					<MenuItem icon="fa-code" name="Projects" active={active === 'projects'} onClick={() => setActiveTab('projects')} />
-					<MenuItem icon="fa-at" name="Contacts" active={active === 'contacts'} onClick={() => setActiveTab('contacts')} />
+				<div className="sticky top-0">
+					<div className={`flex items-center gap-2 cursor-pointer hover:bg-[#5577bb]
+						p-1.5 border-b border-[#5577bb]
+						${leftMenuHiden ? 'justify-center' : 'pl-3'}
+					`} onClick={_=>setLeftMenuHidden(prev=>!prev)}>
+						<i className={`
+							fa-solid fa-angles-left text-xs leading-none
+							${leftMenuHiden ? 'rotate-180' : 'w-4'}
+						`}
+						></i>
+						{leftMenuHiden ? null : <span className="text-xs">Control Panel</span>}
+					</div>
+					<div className="flex flex-col">
+						<MenuItem icon="fa-user" name="General" active={active === 'general'} onClick={() => setActiveTab('general')} />
+						<MenuItem icon="fa-code" name="Projects" active={active === 'projects'} onClick={() => setActiveTab('projects')} />
+						<MenuItem icon="fa-at" name="Contacts" active={active === 'contacts'} onClick={() => setActiveTab('contacts')} />
+					</div>
 				</div>
 			</div>
 		)
@@ -243,7 +245,7 @@ const Profile = ({getPopularLanguages}) => {
 	return (
 		<div className={`h-full grid ${leftMenuHiden ? 'grid-cols-[36px_1fr]' : 'grid-cols-[minmax(theme(spacing.36),auto)_1fr]'}`}>
 			<LeftMenu active={activeTab} setActiveTab={setActiveTab} leftMenuHiden={leftMenuHiden} setLeftMenuHidden={setLeftMenuHidden}/>
-			<div className="overflow-auto max-h-[75dvh]" style={{scrollbarWidth: "thin"}}>
+			<div>
 				{tabs.find(tab=>tab.name === activeTab)?.content}
 			</div>
 		</div>

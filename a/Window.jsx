@@ -101,7 +101,7 @@ const Window = ({name, icon, minimized, setMinimized, close, children, is_error,
 			overflow-hidden
 			${isFullscreen
 				? "w-dvw h-[calc(100dvh-theme(spacing.10))] z-30"
-				: `rounded-md
+				: `rounded-md max-h-[75dvh]
 				   top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
 				   ${is_error ? "z-50" : `z-${zIndex} max-sm:w-[calc(100dvw-theme(spacing.1))]`}
 				`
@@ -147,7 +147,11 @@ const Window = ({name, icon, minimized, setMinimized, close, children, is_error,
 					<WindowButton src="a/assets/close.png" onClick={close}/>
 				</div>
 			</div>
-			<div className="bg-white h-full text-gray-800">
+			<div className="bg-white text-gray-800 overflow-auto"
+				style={{
+					scrollbarWidth: "thin",
+					...(isFullscreen ? {height: "calc(100% - 2.5rem)"} : {maxHeight: "calc(75dvh - 2.5rem)"})
+				}}>
 				{children}
 			</div>
 		</div>
