@@ -245,7 +245,7 @@ const Profile = ({getPopularLanguages}) => {
 	return (
 		<div className={`h-full grid ${leftMenuHiden ? 'grid-cols-[36px_1fr]' : 'grid-cols-[minmax(theme(spacing.36),auto)_1fr]'}`}>
 			<LeftMenu active={activeTab} setActiveTab={setActiveTab} leftMenuHiden={leftMenuHiden} setLeftMenuHidden={setLeftMenuHidden}/>
-			<div>
+			<div className="overflow-x-auto" style={{scrollbarWidth: "thin"}}>
 				{tabs.find(tab=>tab.name === activeTab)?.content}
 			</div>
 		</div>
