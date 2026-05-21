@@ -179,7 +179,7 @@ const Profile = ({getPopularLanguages}) => {
 			<div className="p-3 flex flex-col gap-3">
 				{[
 				{
-					"name": "Extensions",
+					"name": "Browser Extensions",
 					"icon": "fa-puzzle-piece",
 					"items": [
 						[
@@ -202,11 +202,11 @@ const Profile = ({getPopularLanguages}) => {
 						],
 						[
 							"MyTube GUI", "Downloads videos from YouTube",
-							"https://github.com/SuperZombi/MyTube-GUI", ["python", "react", "js"]
+							"https://github.com/SuperZombi/MyTube-GUI", ["python", "react", "js", "css"]
 						],
 						[
 							"Discord Presence", "Customize your Discord Activity as you wish",
-							"https://github.com/SuperZombi/Discord-Presence", ["python", "react", "js"]
+							"https://github.com/SuperZombi/Discord-Presence", ["python", "react", "js", "tailwind"]
 						],
 					]
 				},
