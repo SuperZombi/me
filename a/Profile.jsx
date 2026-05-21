@@ -82,9 +82,9 @@ const Profile = ({getPopularLanguages}) => {
 	}
 	const Link = ({icon, name, url}) => {
 		return (
-			<a href={url} target="_blank" className="flex items-center gap-1">
-				<i className={`${icon} w-5 flex items-center justify-center leading-none`}></i>
-				<span className="hover:underline">{name}</span>
+			<a href={url} target="_blank" className="flex items-center gap-1 w-fit group">
+				<i className={`${icon} w-4 flex items-center justify-center leading-none`}></i>
+				<span className="group-hover:underline">{name}</span>
 			</a>
 		)
 	}
