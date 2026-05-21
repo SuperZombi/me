@@ -92,13 +92,26 @@ const Profile = ({getPopularLanguages}) => {
 	const Bar = ({current, total}) => {
 		const percent = (current / total) * 100
 		return (
-			<div className="w-full h-2.5 bg-[#ddddee] rounded-sm overflow-hidden ring-1 ring-[#aaaabb]">
+			<div className="w-full h-2 bg-[#c3daf2] rounded-sm overflow-hidden ring-1 ring-[#a9c0e0]">
 				<div className="h-full bg-[#3275dd]"
 					style={{width: `${percent}%`}}
 				/>
 			</div>
 		)
 	}
+	const ProjectCard = ({title, desc, stack, status, link}) => (
+		<div className="border border-[#a9c0e0] bg-[#f4f9ff] rounded-sm p-2 text-xs flex flex-col gap-2">
+			<div className="flex justify-between gap-2 items-start">
+				<h3 className="font-bold text-[#143f88]">{title}</h3>
+				<span className="bg-[#d6ebff] border border-[#96b7e8] px-1 rounded-sm text-[11px]">{status}</span>
+			</div>
+			<p>{desc}</p>
+			<div className="flex gap-1 flex-wrap">{stack.map(item => <Tag key={item}>{item}</Tag>)}</div>
+			<a href={link} target="_blank" rel="noreferrer" className="text-[#003399] hover:underline w-fit">
+				<i className="fa-solid fa-arrow-up-right-from-square mr-1"></i>Открыть
+			</a>
+		</div>
+	)
 	const [userLanguages, setUserLanguages] = React.useState(null)
 	React.useEffect(() => {
 		getPopularLanguages('SuperZombi').then(setUserLanguages)
@@ -179,7 +192,7 @@ const Profile = ({getPopularLanguages}) => {
 			</div>
 		)},
 		{name: 'contacts', content: (
-			<div className="min-w-max">
+			<div>
 				<div className="p-3 flex flex-col gap-3">
 					<Section icon={"fa-link"} title="Connected Accounts">
 						<div className="text-xs flex flex-col gap-y-1.5 w-full">
@@ -196,7 +209,7 @@ const Profile = ({getPopularLanguages}) => {
 	return (
 		<div className={`h-full grid ${leftMenuHiden ? 'grid-cols-[36px_1fr]' : 'grid-cols-[minmax(theme(spacing.36),auto)_1fr]'}`}>
 			<LeftMenu active={activeTab} setActiveTab={setActiveTab} leftMenuHiden={leftMenuHiden} setLeftMenuHidden={setLeftMenuHidden}/>
-			<div className="overflow-auto">
+			<div className="overflow-auto max-h-[75dvh]" style={{scrollbarWidth: "thin"}}>
 				{tabs.find(tab=>tab.name === activeTab)?.content}
 			</div>
 		</div>
