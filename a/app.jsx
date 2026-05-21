@@ -64,6 +64,11 @@ const App = () => {
 			name: "Games",
 			icon: "a/assets/game.png",
 			content: <Games/>
+		},
+		{
+			name: "My Computer",
+			icon: "a/assets/trash.png",
+			content: <MyComputer/>
 		}
 	]
 	const playSound = () => {
@@ -163,6 +168,41 @@ const NoDiskSpaceError = ({onClose}) => {
 	)
 }
 
+
+
+const MyComputer = () => {
+	const specs = [
+		["OS", "Windows XP Professional (Retro Build)"],
+		["CPU", "Intel Core i5 / Ryzen 5 (пример)"],
+		["RAM", "16 GB DDR4 (можно заменить на свои)"],
+		["GPU", "NVIDIA GTX/RTX или AMD Radeon"],
+		["Storage", "SSD 512 GB + HDD 1 TB"],
+		["Internet", "Ethernet / Wi‑Fi"],
+	]
+	const ideas = [
+		"Сделать страницу 'Guestbook' с сообщениями друзей.",
+		"Добавить Achievements: 'Открыл 5 окон', 'Нашел пасхалку'.",
+		"Спрятать hidden file на рабочем столе с секретной ссылкой.",
+		"Сделать Winamp-like мини плеер со своими треками.",
+		"Добавить 'BSOD prank' как редкую пасхалку (без вреда).",
+	]
+	return (
+		<div className="p-3 text-xs min-w-max flex flex-col gap-3">
+			<div className="ring-1 ring-[#a9c0e0] rounded-sm overflow-hidden">
+				<div className="bg-[#c3daf2] px-3 py-1 font-bold border-b border-[#a9c0e0]">System Properties</div>
+				<div className="p-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1">
+					{specs.map(([k,v]) => <React.Fragment key={k}><div className="text-gray-500">{k}:</div><div>{v}</div></React.Fragment>)}
+				</div>
+			</div>
+			<div className="ring-1 ring-[#a9c0e0] rounded-sm overflow-hidden">
+				<div className="bg-[#c3daf2] px-3 py-1 font-bold border-b border-[#a9c0e0]">Что еще можно добавить в визитку</div>
+				<ul className="p-3 list-disc pl-7 space-y-1">
+					{ideas.map(i => <li key={i}>{i}</li>)}
+				</ul>
+			</div>
+		</div>
+	)
+}
 const cachedUserLanguages = {}
 async function getPopularLanguages(username) {
 	if (cachedUserLanguages[username]) {
