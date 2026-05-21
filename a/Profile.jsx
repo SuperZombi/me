@@ -28,36 +28,50 @@ const Profile = ({getPopularLanguages}) => {
 				<div className="flex flex-col">
 					<MenuItem icon="fa-user" name="General" active={active === 'general'} onClick={() => setActiveTab('general')} />
 					<MenuItem icon="fa-code" name="Projects" active={active === 'projects'} onClick={() => setActiveTab('projects')} />
-					<MenuItem icon="fa-heart" name="Interests" active={active === 'intersts'} onClick={() => setActiveTab('intersts')} />
+					<MenuItem icon="fa-heart" name="Interests" active={active === 'interests'} onClick={() => setActiveTab('interests')} />
 					<MenuItem icon="fa-pen" name="Dev Log" active={active === 'dev-log'} onClick={() => setActiveTab('dev-log')} />
 					<MenuItem icon="fa-at" name="Contacts" active={active === 'contacts'} onClick={() => setActiveTab('contacts')} />
 				</div>
 			</div>
 		)
 	}
-	const Section = ({icon, title, children}) => {
+	const Section = ({icon, title, items, children, className=""}) => {
 		return (
 			<div className="ring-1 ring-[#a9c0e0] rounded-sm">
 				<div className="bg-[#c3daf2] text-gray-800 text-sm px-3 py-1 flex items-center gap-2 border-b border-[#a9c0e0]">
-					<i className={`fa-solid ${icon} text-sm leading-none`}></i>
+					<i className={`fa-solid ${icon} text-sm`}></i>
 					<span className="font-bold">{title}</span>
 				</div>
-				<div className="p-2">
-					{children}
+				<div className="px-2 py-0.5">
+					{children ? children : (
+						<div className={`
+							grid grid-cols-[auto_1fr] items-center
+							gap-x-4
+							w-full text-xs
+							divide-y
+							${className}
+						`}>
+							{items.map((item, index) => {
+								return (
+									<Row key={index} label={item[0]} value={item[1]} className={item[2]}/>
+								)
+							})}
+						</div>
+					)}
 				</div>
 			</div>
 		)
 	}
 	const Row = ({label, value, className}) => {
 		return (
-			<React.Fragment>
+			<div className="grid grid-cols-subgrid col-span-2 items-center py-1.5">
 				<div className="text-gray-500">
 					{label}
 				</div>
 				<div className={`text-gray-800 ${className || ''}`}>
 					{value}
 				</div>
-			</React.Fragment>
+			</div>
 		)
 	}
 	const Tag = ({children}) => {
@@ -75,11 +89,21 @@ const Profile = ({getPopularLanguages}) => {
 			</a>
 		)
 	}
+	const Bar = ({current, total}) => {
+		const percent = (current / total) * 100
+		return (
+			<div className="w-full h-2.5 bg-[#ddddee] rounded-sm overflow-hidden ring-1 ring-[#aaaabb]">
+				<div className="h-full bg-[#3275dd]"
+					style={{width: `${percent}%`}}
+				/>
+			</div>
+		)
+	}
 	const [userLanguages, setUserLanguages] = React.useState(null)
 	React.useEffect(() => {
 		getPopularLanguages('SuperZombi').then(setUserLanguages)
 	}, [])
-	const total = userLanguages?.reduce((sum, lang) => sum + lang.count, 0) || 0
+	const langTotal = userLanguages?.reduce((sum, lang) => sum + lang.count, 0) || 0
 	const tabs = [
 		{name: 'general', content: (
 			<div className="min-w-max">
@@ -95,12 +119,13 @@ const Profile = ({getPopularLanguages}) => {
 					</div>
 				</div>
 				<div className="p-3 flex flex-col gap-3">
-					<Section icon={"fa-circle-info"} title="General Information">
-						<div className="text-xs grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-1.5 w-full">
-							<Row label="Pronouns:" value="he/him" />
-							<Row label="Description:" value="React Frontend Web Developer" />
-							<Row label="IP address:" value="192.168.1.101" className="font-mono" />
-							<Row label="Tags:" value={(
+					<Section icon={"fa-circle-info"}
+						title="General Information"
+						items={[
+							["Pronouns:", "he/him"],
+							["Description:", "React Frontend Web Developer"],
+							["IP address:", "192.168.1.101", "font-mono"],
+							["Tags:", 
 								<React.Fragment>
 									<Tag>dev</Tag>
 									<Tag>anime</Tag>
@@ -108,30 +133,30 @@ const Profile = ({getPopularLanguages}) => {
 									<Tag>react</Tag>
 									<Tag>python</Tag>
 								</React.Fragment>
-							)} className="flex gap-1"/>
-						</div>
+							, "flex gap-1 font-mono"],
+						]}
+					/>
+					<Section icon={"fa-language"}
+						title="Languages"
+						items={userLanguages?.map(item=>{
+							return [
+								item.language,
+								<Bar current={item.count} total={langTotal}/>
+							]
+						}) || []}
+					>
+						{!userLanguages && <div className="flex justify-center p-2"><i className="fa-solid fa-spinner fa-spin"></i></div>}
 					</Section>
-					{userLanguages && (
-						<Section icon={"fa-microchip"} title="Languages">
-							<div className="grid grid-cols-[auto_1fr] items-center gap-x-3 gap-y-1 w-full">
-								{userLanguages.map(lang => {
-									const percent = (lang.count / total) * 100
-									return (
-										<React.Fragment key={lang.language}>
-											<div className="text-xs truncate text-gray-600">
-												{lang.language}
-											</div>
-											<div className="w-full h-2.5 bg-[#ddddee] rounded-xs overflow-hidden ring-1 ring-[#aaaabb]">
-												<div className="h-full bg-[#3275dd]"
-													style={{width: `${percent}%`}}
-												/>
-											</div>
-										</React.Fragment>
-									)
-								})}
-							</div>
-						</Section>
-					)}
+					<Section icon={"fa-microchip"}
+						title="My Computer"
+						items={[
+							["OS:", "Windows 11 Pro"],
+							["CPU:", "Intel Core i5 12450H"],
+							["GPU:", "NVIDIA RTX 4060"],
+							["RAM:", "16 GB DDR4"],
+							["Storage:", "1 TB SSD"]
+						]}
+					/>
 				</div>
 			</div>
 		)},
@@ -141,7 +166,7 @@ const Profile = ({getPopularLanguages}) => {
 				<p>This is the projects section.</p>
 			</div>
 		)},
-		{name: 'intersts', content: (
+		{name: 'interests', content: (
 			<div>
 				<h2>Interests</h2>
 				<p>This is the interests section.</p>
