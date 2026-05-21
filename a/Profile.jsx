@@ -28,8 +28,6 @@ const Profile = ({getPopularLanguages}) => {
 				<div className="flex flex-col">
 					<MenuItem icon="fa-user" name="General" active={active === 'general'} onClick={() => setActiveTab('general')} />
 					<MenuItem icon="fa-code" name="Projects" active={active === 'projects'} onClick={() => setActiveTab('projects')} />
-					<MenuItem icon="fa-heart" name="Interests" active={active === 'interests'} onClick={() => setActiveTab('interests')} />
-					<MenuItem icon="fa-pen" name="Dev Log" active={active === 'dev-log'} onClick={() => setActiveTab('dev-log')} />
 					<MenuItem icon="fa-at" name="Contacts" active={active === 'contacts'} onClick={() => setActiveTab('contacts')} />
 				</div>
 			</div>
@@ -38,11 +36,11 @@ const Profile = ({getPopularLanguages}) => {
 	const Section = ({icon, title, items, children, className=""}) => {
 		return (
 			<div className="ring-1 ring-[#a9c0e0] rounded-sm">
-				<div className="bg-[#c3daf2] text-gray-800 text-sm px-3 py-1 flex items-center gap-2 border-b border-[#a9c0e0]">
+				<div className="bg-[#c3daf2] text-gray-800 text-sm px-2 py-1 flex items-center gap-2 border-b border-[#a9c0e0]">
 					<i className={`fa-solid ${icon} text-sm`}></i>
 					<span className="font-bold">{title}</span>
 				</div>
-				<div className="px-2 py-0.5">
+				<div className={children ? "p-2" : "px-2 py-0.5"}>
 					{children ? children : (
 						<div className={`
 							grid grid-cols-[auto_1fr] items-center
@@ -76,14 +74,14 @@ const Profile = ({getPopularLanguages}) => {
 	}
 	const Tag = ({children}) => {
 		return (
-			<div className="bg-[#c3daf2] border border-[#a9c0e0] text-xs px-1 w-fit rounded-sm">
+			<div className="bg-[#c3daf2] border border-[#a9c0e0] text-xs font-mono px-1 w-fit rounded-sm">
 				{children}
 			</div>
 		)
 	}
 	const Link = ({icon, name, url}) => {
 		return (
-			<a href={url} className="flex items-center gap-1">
+			<a href={url} target="_blank" className="flex items-center gap-1">
 				<i className={`${icon} w-5 flex items-center justify-center leading-none`}></i>
 				<span className="hover:underline">{name}</span>
 			</a>
@@ -99,24 +97,26 @@ const Profile = ({getPopularLanguages}) => {
 			</div>
 		)
 	}
-	const ProjectCard = ({title, desc, stack, status, link}) => (
+	const ProjectCard = ({title, desc, link, tags}) => (
 		<div className="border border-[#a9c0e0] bg-[#f4f9ff] rounded-sm p-2 text-xs flex flex-col gap-2">
 			<div className="flex justify-between gap-2 items-start">
-				<h3 className="font-bold text-[#143f88]">{title}</h3>
-				<span className="bg-[#d6ebff] border border-[#96b7e8] px-1 rounded-sm text-[11px]">{status}</span>
+				<a href={link} target="_blank" className="font-bold text-[#143f88] cursor-pointer hover:underline">
+					{title}
+				</a>
 			</div>
-			<p>{desc}</p>
-			<div className="flex gap-1 flex-wrap">{stack.map(item => <Tag key={item}>{item}</Tag>)}</div>
-			<a href={link} target="_blank" rel="noreferrer" className="text-[#003399] hover:underline w-fit">
-				<i className="fa-solid fa-arrow-up-right-from-square mr-1"></i>Открыть
-			</a>
+			<div>{desc}</div>
+			<div className="flex gap-1 flex-wrap">
+				{tags.map(item => <Tag key={item}>{item}</Tag>)}
+			</div>
 		</div>
 	)
+
 	const [userLanguages, setUserLanguages] = React.useState(null)
 	React.useEffect(() => {
 		getPopularLanguages('SuperZombi').then(setUserLanguages)
 	}, [])
 	const langTotal = userLanguages?.reduce((sum, lang) => sum + lang.count, 0) || 0
+
 	const tabs = [
 		{name: 'general', content: (
 			<div className="min-w-max">
@@ -146,7 +146,7 @@ const Profile = ({getPopularLanguages}) => {
 									<Tag>react</Tag>
 									<Tag>python</Tag>
 								</React.Fragment>
-							, "flex gap-1 font-mono"],
+							, "flex gap-1"],
 						]}
 					/>
 					<Section icon={"fa-language"}
@@ -174,21 +174,55 @@ const Profile = ({getPopularLanguages}) => {
 			</div>
 		)},
 		{name: 'projects', content: (
-			<div>
-				<h2>Projects</h2>
-				<p>This is the projects section.</p>
-			</div>
-		)},
-		{name: 'interests', content: (
-			<div>
-				<h2>Interests</h2>
-				<p>This is the interests section.</p>
-			</div>
-		)},
-		{name: 'dev-log', content: (
-			<div>
-				<h2>Dev Log</h2>
-				<p>This is the development log section.</p>
+			<div className="p-3 flex flex-col gap-3">
+				{[
+				{
+					"name": "Extensions",
+					"icon": "fa-puzzle-piece",
+					"items": [
+						[
+							"HDrezka Helper", "Downloads movies and subtitles. Supports mirrors", 
+							"https://github.com/SuperZombi/HDrezka-Helper", ["js", "html", "css"]
+						],
+						[
+							"PiP for Youtube", "Picture in Picture button and other useful features",
+							"https://github.com/SuperZombi/Picture-in-Picture-for-Youtube", ["js", "html", "css"]
+						],
+					]
+				},
+				{
+					"name": "Applications",
+					"icon": "fa-layer-group",
+					"items": [
+						[
+							"GI Cutscenes UI", "User Interface for Genshin Cutscenes Demuxer",
+							"https://github.com/SuperZombi/GICutscenesUI", ["python", "js", "html", "css"]
+						],
+						[
+							"MyTube GUI", "Downloads videos from YouTube",
+							"https://github.com/SuperZombi/MyTube-GUI", ["python", "react", "js"]
+						],
+						[
+							"Discord Presence", "Customize your Discord Activity as you wish",
+							"https://github.com/SuperZombi/Discord-Presence", ["python", "react", "js"]
+						],
+					]
+				},
+				].map((cat, index)=>(
+					<Section key={index} icon={cat.icon} title={cat.name}>
+						<div className="flex flex-col gap-2">
+							{cat.items.map((item, i)=>(
+								<ProjectCard
+									key={i}
+									title={item[0]}
+									desc={item[1]}
+									link={item[2]}
+									tags={item[3]}
+								/>
+							))}
+						</div>
+					</Section>
+				))}
 			</div>
 		)},
 		{name: 'contacts', content: (

@@ -88,7 +88,7 @@ const StartMenu = ({runApp, appsList, setShowStartMenu, onShutDown}) => {
 				grid gap-2
 				${icon == "r" ? "grid-cols-[1fr_theme(spacing.6)]" : "grid-cols-[theme(spacing.6)_1fr]"}
 			`}
-			onClick={url ? _=>window.open(url, "_self") : onClick}
+			onClick={url ? _=>window.open(url, "_blank") : onClick}
 		>
 			{children}
 		</button>

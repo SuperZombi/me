@@ -2,7 +2,7 @@ const Games = ({}) => {
     const ListItem = ({name, icon, url}) => {
         return (
             <li className="py-1">
-                <a className="flex items-center gap-2" href={url}>
+                <a className="flex items-center gap-2" href={url} target="_blank">
                     <i className={`fa-solid ${icon} flex items-center justify-center w-6 text-sm leading-none`}></i>
                     <span className="text-blue-600 hover:underline">{name}</span>
                 </a>
