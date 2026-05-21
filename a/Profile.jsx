@@ -151,7 +151,7 @@ const Profile = ({getPopularLanguages}) => {
 						]}
 					/>
 					<Section icon={"fa-link"} title="Connected Accounts">
-						<div className="text-xs grid grid-cols-[repeat(auto-fill,minmax(theme(spacing.24),1fr))] gap-2 w-full">
+						<div className="text-xs grid grid-cols-[repeat(auto-fill,minmax(theme(spacing.28),1fr))] gap-2 w-full">
 							<Link icon="fa-brands fa-github" name="github" url="https://github.com/SuperZombi"/>
 							<Link icon="fa-brands fa-youtube" name="youtube" url="https://www.youtube.com/@SuperZombi"/>
 							<Link icon="fa-brands fa-telegram" name="telegram" url="https://t.me/SuperZombi"/>
