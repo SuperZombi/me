@@ -143,11 +143,15 @@ const StartMenu = ({runApp, appsList, setShowStartMenu, onShutDown}) => {
 						<i className="fa-brands fa-github text-xl text-center"></i>
 						<span>Repos</span>
 					</MenuItem>
+					<MenuItem url="https://superzombi.github.io/currency/">
+						<i className="fa-solid fa-coins text-xl text-center"></i>
+						<span>Currency</span>
+					</MenuItem>
+					<div className="my-2 border-t border-[#b4d1f4]" />
 					<MenuItem url="https://superzombi.github.io/web-os/">
 						<img src="a/assets/win-11.png" draggable={false}/>
 						<span>Windows 12</span>
 					</MenuItem>
-					<div className="my-2 border-t border-[#b4d1f4]" />
 				</div>
 			</div>
 
