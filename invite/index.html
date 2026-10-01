@@ -1,26 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Invite</title>
-	<meta name='viewport' content='width=device-width, initial-scale=1'>
+<meta charset="utf-8">
+<title>Invite</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+html, body { margin: 0; height: 100%; }
 body {
-	margin: 0;
-	height: 100vh;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+	height: 100dvh;
 	background: linear-gradient(135deg, #1e1e2f, #2a2a40);
 	font-family: sans-serif;
 	overflow: hidden;
 	color: #eee;
+	color-scheme: dark;
 }
-.buttons-area{
-	display: flex;
-	gap: 1rem;
+.screen {
+	display: none;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	padding: 0 1rem;
+	box-sizing: border-box;
+	text-align: center;
 }
-button {
+.screen.active { display: flex; }
+h2 { margin: 0 0 1rem; user-select: none; }
+p { margin: 0 0 1rem; font-size: 1.1rem; opacity: .85; }
+img { height: 200px; padding-bottom: 2rem; user-select: none; pointer-events: none; }
+#when img { height: 180px; padding-bottom: 1.5rem; }
+
+.buttons-area { display: flex; gap: 1rem; align-items: center; }
+.slot { display: inline-block; }
+
+.btn {
 	padding: 1rem 2.5rem;
 	font-size: 1rem;
 	text-transform: uppercase;
@@ -33,102 +46,139 @@ button {
 	box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 	user-select: none;
 	font-weight: bold;
-}
-button.active {
 	cursor: pointer;
 }
-button.active:hover {
+.btn:hover:not(:disabled) {
 	background-position: right center;
 	transform: translateY(-3px) scale(1.03);
 	box-shadow: 0 12px 30px rgba(0,0,0,0.4);
 }
-button.active:active {
-	transform: scale(0.97);
-	box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+.btn:active:not(:disabled) { transform: scale(0.97); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.btn:disabled { opacity: .4; cursor: not-allowed; }
+a.btn { display: inline-block; text-decoration: none; }
+#no.free { position: fixed; cursor: default; }
+
+.picker { display: flex; flex-direction: column; gap: 1rem; align-items: center; margin-bottom: 2rem; }
+input[type=date], input[type=time] {
+	font: inherit; font-size: 1.1rem; padding: .8rem 1rem;
+	color: #eee; background: #2f2f48; border: 2px solid #44446a; border-radius: 12px;
 }
-h2 {
-	margin: 0;
-	text-align: center;
-	user-select: none;
-}
-img {
-	padding-bottom: 3rem;
-	user-select: none;
-	pointer-events: none;
-}
+:focus-visible { outline: 3px solid #1cb0f6; outline-offset: 2px; }
 </style>
 </head>
 <body>
-	<h2 id="mainText">Will you go out with me?</h2>
-	<img src="waiting.gif" height="200px" id="mainImg" draggable="false">
+
+<section class="screen active" id="invite">
+	<h2>Will you go out with me?</h2>
+	<img src="waiting.gif" draggable="false">
 	<div class="buttons-area">
-		<button id="yes" class="active">Yes</button>
-		<button id="no">No</button>
+		<button class="btn" id="yes">Yes</button>
+		<div class="slot" id="noSlot"><button class="btn" id="no">No</button></div>
 	</div>
+</section>
+
+<section class="screen" id="when">
+	<h2>Good choice!</h2>
+	<h2>When are you free?</h2>
+	<img src="time.gif" draggable="false">
+	<div class="picker">
+		<input type="date" id="date" aria-label="Date">
+		<input type="time" id="time" aria-label="Time">
+	</div>
+	<div class="buttons-area">
+		<button class="btn" id="confirm" disabled>Confirm</button>
+	</div>
+</section>
+
+<section class="screen" id="done">
+	<h2>It's a date!</h2>
+	<img src="pizza.gif" draggable="false">
+	<p id="summary"></p>
+	<p>See you there!</p>
+	<a class="btn" id="gcal" target="_blank" rel="noopener">Add to Calendar</a>
+</section>
 
 <script>
-	const btnYes = document.querySelector("#yes")
-	const btnNo = document.querySelector("#no")
-	const yesRect = btnYes.getBoundingClientRect()
-	const rect = btnNo.getBoundingClientRect()
-	const btnWidth = rect.width
-	const btnHeight = rect.height
+	const $ = s => document.querySelector(s)
+	const screens = [...document.querySelectorAll(".screen")]
 
-	function initPosition() {
-		const rect1 = btnNo.getBoundingClientRect()
-		btnNo.style.left = rect1.left + "px"
-		btnNo.style.top = rect1.top + "px"
-		const rect2 = btnYes.getBoundingClientRect()
-		btnYes.style.left = rect2.left + "px"
-		btnYes.style.top = rect2.top + "px"
-		btnNo.style.position = "absolute"
-		btnYes.style.position = "absolute"
-	}
-	window.addEventListener("load", initPosition)
-
-	function moveButton(e) {
-		const safeDistance = 100
-		const safeGap = 50
-		const x = e.clientX ?? (e.touches?.[0]?.clientX)
-		const y = e.clientY ?? (e.touches?.[0]?.clientY)
-		let newX, newY
-		let attempts = 0
-		do {
-			newX = Math.random() * (window.innerWidth - btnWidth)
-			newY = Math.random() * (window.innerHeight - btnHeight)
-			const dx = newX + btnWidth / 2 - x
-			const dy = newY + btnHeight / 2 - y
-			const distance = Math.sqrt(dx * dx + dy * dy)
-			const overlap = !(
-				newX + btnWidth + safeGap < yesRect.left ||
-				newX > yesRect.right + safeGap ||
-				newY + btnHeight + safeGap < yesRect.top ||
-				newY > yesRect.bottom + safeGap
-			)
-			if (distance > safeDistance && !overlap) break
-			attempts++
-		} while (attempts < 30)
-		btnNo.style.left = newX + "px"
-		btnNo.style.top = newY + "px"
+	// Switch between screens by id: "invite" -> "when" -> "done"
+	function showScreen(id) {
+		screens.forEach(s => s.classList.toggle("active", s.id === id))
+		resetNo()
 	}
 
-	btnNo.addEventListener("mouseover", (e) => {
-		moveButton(e)
-	})
-	btnNo.addEventListener("touchstart", (e) => {
-		moveButton(e)
-	})
-	btnNo.addEventListener("touch", (e) => {
-		moveButton(e)
-	})
-	btnNo.addEventListener("click", (e) => {
-		moveButton(e)
-	})
+	/* ---------- Screen 1: runaway "No" button ---------- */
+	const yes = $("#yes"), no = $("#no"), slot = $("#noSlot")
 
-	btnYes.addEventListener("click", _=>{
-		document.querySelector("#mainImg").src = "pizza.gif"
-		document.querySelector("#mainText").textContent = "Good choice"
-		document.querySelector(".buttons-area").style.display = "none"
+	function resetNo() {
+		no.classList.remove("free")
+		no.style.left = no.style.top = ""
+	}
+
+	function moveNo(e) {
+		const p = e.touches?.[0] ?? e
+		if (!no.classList.contains("free")) {
+			// Keep the button's space in the layout so nothing shifts
+			const r = no.getBoundingClientRect()
+			slot.style.width = r.width + "px"
+			slot.style.height = r.height + "px"
+			no.style.left = r.left + "px"
+			no.style.top = r.top + "px"
+			no.classList.add("free")
+		}
+		const w = no.offsetWidth, h = no.offsetHeight, m = 8, gap = 50
+		const y = yes.getBoundingClientRect() // measured live, never stale
+		let x1, y1
+		for (let i = 0; i < 30; i++) {
+			x1 = m + Math.random() * (window.innerWidth - w - 2 * m)
+			y1 = m + Math.random() * (window.innerHeight - h - 2 * m)
+			const far = Math.hypot(x1 + w / 2 - (p.clientX ?? 0), y1 + h / 2 - (p.clientY ?? 0)) > 100
+			const hitsYes = !(x1 + w + gap < y.left || x1 > y.right + gap ||
+			                  y1 + h + gap < y.top || y1 > y.bottom + gap)
+			if (far && !hitsYes) break
+		}
+		no.style.left = x1 + "px"
+		no.style.top = y1 + "px"
+	}
+
+	no.addEventListener("pointerenter", moveNo)
+	no.addEventListener("click", moveNo)
+	window.addEventListener("resize", resetNo)
+	yes.addEventListener("click", () => showScreen("when"))
+
+	/* ---------- Screen 2: date & time ---------- */
+	const dateInput = $("#date"), confirmBtn = $("#confirm")
+	const today = new Date()
+	dateInput.min = [today.getFullYear(), String(today.getMonth() + 1).padStart(2, "0"),
+	                 String(today.getDate()).padStart(2, "0")].join("-")
+
+	const timeInput = $("#time")
+	function validate() { confirmBtn.disabled = !(dateInput.value && timeInput.value) }
+	dateInput.addEventListener("input", validate)
+	timeInput.addEventListener("input", validate)
+
+	/* ---------- Screen 3: confirmation ---------- */
+	confirmBtn.addEventListener("click", () => {
+		const [y, m, d] = dateInput.value.split("-").map(Number)
+		const day = new Date(y, m - 1, d).toLocaleDateString("en-US",
+			{ weekday: "long", month: "long", day: "numeric" })
+		const [hh, mm] = timeInput.value.split(":")
+		$("#summary").textContent = `${day} at ${timeInput.value}.`
+
+		// Google Calendar link (event lasts 2 hours, in the viewer's own time zone)
+		const pad = n => String(n).padStart(2, "0")
+		const fmt = t => `${t.getFullYear()}${pad(t.getMonth() + 1)}${pad(t.getDate())}T${pad(t.getHours())}${pad(t.getMinutes())}00`
+
+		const start = new Date(y, m - 1, d, +hh, +mm)
+		const end = new Date(start.getTime() + 2 * 60 * 60 * 1000)
+		$("#gcal").href = "https://calendar.google.com/calendar/render?" + new URLSearchParams({
+			action: "TEMPLATE",
+			text: "Our date",
+			dates: `${fmt(start)}/${fmt(end)}`,
+			details: "Looking forward to it!"
+		})
+		showScreen("done")
 	})
 </script>
 </body>
